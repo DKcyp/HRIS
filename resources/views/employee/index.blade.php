@@ -24,30 +24,30 @@
             <div class="col-md-2">
                 <select class="form-select">
                     <option value="">Semua Divisi</option>
-                    <option value="1">IT</option>
-                    <option value="2">HRD</option>
-                    <option value="3">Finance</option>
+                    <option>IT</option>
+                    <option>HRD</option>
+                    <option>Finance</option>
+                    <option>Marketing</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <select class="form-select">
                     <option value="">Semua Status</option>
-                    <option value="aktif">Aktif</option>
-                    <option value="resign">Resign</option>
-                    <option value="kontrak">Kontrak</option>
+                    <option>Aktif</option>
+                    <option>Kontrak</option>
+                    <option>Resign</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <button class="btn btn-secondary w-100">
-                    <i class="fas fa-search me-1"></i>
-                    Cari
+                    <i class="fas fa-search me-1"></i> Cari
                 </button>
             </div>
         </div>
         
         <!-- Table -->
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
                         <th>NIK</th>
@@ -57,43 +57,43 @@
                         <th>Email</th>
                         <th>Telepon</th>
                         <th>Status</th>
-                        <th>Aksi</th>
+                        <th class="text-center" width="120">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($employees ?? [] as $employee)
+                    @forelse($employees as $emp)
                     <tr>
-                        <td><strong>{{ $employee->nik }}</strong></td>
+                        <td><code>{{ $emp->nik }}</code></td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <div class="user-avatar me-2" style="width: 35px; height: 35px; font-size: 0.875rem;">
-                                    {{ substr($employee->nama, 0, 1) }}
+                                <div style="width:35px;height:35px;border-radius:50%;background:#4e73df;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.85rem;margin-right:10px;">
+                                    {{ strtoupper(substr($emp->nama,0,1)) }}
                                 </div>
-                                {{ $employee->nama }}
+                                {{ $emp->nama }}
                             </div>
                         </td>
-                        <td>{{ $employee->divisi }}</td>
-                        <td>{{ $employee->jabatan }}</td>
-                        <td>{{ $employee->email }}</td>
-                        <td>{{ $employee->telepon }}</td>
+                        <td>{{ $emp->divisi }}</td>
+                        <td>{{ $emp->jabatan }}</td>
+                        <td>{{ $emp->email }}</td>
+                        <td>{{ $emp->telepon }}</td>
                         <td>
-                            @if($employee->status == 'aktif')
+                            @if($emp->status == 'aktif')
                                 <span class="badge bg-success">Aktif</span>
-                            @elseif($employee->status == 'kontrak')
-                                <span class="badge bg-warning">Kontrak</span>
+                            @elseif($emp->status == 'kontrak')
+                                <span class="badge bg-warning text-dark">Kontrak</span>
                             @else
                                 <span class="badge bg-danger">Resign</span>
                             @endif
                         </td>
-                        <td>
+                        <td class="text-center">
                             <div class="btn-group btn-group-sm">
-                                <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-info" title="Detail">
+                                <a href="{{ route('employee.show', $emp->id) }}" class="btn btn-outline-info" title="Detail">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-warning" title="Edit">
+                                <a href="{{ route('employee.edit', $emp->id) }}" class="btn btn-outline-warning" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <button class="btn btn-danger" title="Hapus">
+                                <button class="btn btn-outline-danger" title="Hapus">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -105,8 +105,7 @@
                             <i class="fas fa-users fa-3x mb-3 d-block"></i>
                             <p>Belum ada data karyawan</p>
                             <a href="{{ route('employee.create') }}" class="btn btn-primary mt-2">
-                                <i class="fas fa-plus me-1"></i>
-                                Tambah Karyawan Pertama
+                                <i class="fas fa-plus me-1"></i> Tambah Karyawan Pertama
                             </a>
                         </td>
                     </tr>
@@ -116,26 +115,18 @@
         </div>
         
         <!-- Pagination -->
-        @if(isset($employees) && count($employees) > 0)
         <div class="d-flex justify-content-between align-items-center mt-4">
             <div class="text-muted">
-                Menampilkan 1 - 10 dari {{ count($employees) }} data
+                Menampilkan 1 - {{ count($employees) }} dari {{ count($employees) }} data
             </div>
             <nav>
                 <ul class="pagination mb-0">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">Previous</a>
-                    </li>
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
                     <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
+                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
                 </ul>
             </nav>
         </div>
-        @endif
     </div>
 </div>
 @endsection
