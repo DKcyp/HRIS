@@ -1,0 +1,180 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\OrganisasiController;
+use App\Http\Controllers\RecruitmentController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\IzinController;
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PerformanceController;
+use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\DokumenController;
+use App\Http\Controllers\ResignController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\UserManagementController;
+
+// Dashboard
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+// Employee Management
+Route::prefix('employee')->name('employee.')->group(function () {
+    Route::get('/riwayat-jabatan', [EmployeeController::class, 'riwayatJabatan'])->name('riwayat-jabatan');
+    Route::get('/riwayat-gaji', [EmployeeController::class, 'riwayatGaji'])->name('riwayat-gaji');
+    Route::get('/pendidikan', [EmployeeController::class, 'pendidikan'])->name('pendidikan');
+    Route::get('/pengalaman', [EmployeeController::class, 'pengalaman'])->name('pengalaman');
+    Route::get('/sertifikat', [EmployeeController::class, 'sertifikat'])->name('sertifikat');
+    Route::get('/dokumen', [EmployeeController::class, 'dokumen'])->name('dokumen');
+    Route::get('/kontak-darurat', [EmployeeController::class, 'kontakDarurat'])->name('kontak-darurat');
+    Route::get('/status', [EmployeeController::class, 'status'])->name('status');
+});
+Route::resource('employee', EmployeeController::class);
+Route::pattern('employee', '[0-9]+');
+
+// Organisasi
+Route::prefix('organisasi')->name('organisasi.')->group(function () {
+    Route::get('/division', [OrganisasiController::class, 'division'])->name('division');
+    Route::get('/department', [OrganisasiController::class, 'department'])->name('department');
+    Route::get('/position', [OrganisasiController::class, 'position'])->name('position');
+    Route::get('/grade', [OrganisasiController::class, 'grade'])->name('grade');
+    Route::get('/location', [OrganisasiController::class, 'location'])->name('location');
+    Route::get('/shift', [OrganisasiController::class, 'shift'])->name('shift');
+});
+
+// Recruitment
+Route::prefix('recruitment')->name('recruitment.')->group(function () {
+    Route::get('/', [RecruitmentController::class, 'index'])->name('index');
+    Route::get('/applicant', [RecruitmentController::class, 'applicant'])->name('applicant');
+    Route::get('/interview', [RecruitmentController::class, 'interview'])->name('interview');
+    Route::get('/offering', [RecruitmentController::class, 'offering'])->name('offering');
+    Route::get('/psikotes', [RecruitmentController::class, 'psikotes'])->name('psikotes');
+    Route::get('/hiring', [RecruitmentController::class, 'hiring'])->name('hiring');
+});
+
+// Attendance
+Route::prefix('attendance')->name('attendance.')->group(function () {
+    Route::get('/', [AttendanceController::class, 'index'])->name('index');
+    Route::get('/checkin', [AttendanceController::class, 'checkin'])->name('checkin');
+    Route::post('/checkin', [AttendanceController::class, 'storeCheckin'])->name('checkin.store');
+    Route::get('/overtime', [AttendanceController::class, 'overtime'])->name('overtime');
+    Route::get('/terlambat', [AttendanceController::class, 'terlambat'])->name('terlambat');
+    Route::get('/riwayat', [AttendanceController::class, 'riwayat'])->name('riwayat');
+});
+
+// Leave Management
+Route::prefix('leave')->name('leave.')->group(function () {
+    Route::get('/approval', [LeaveController::class, 'approval'])->name('approval');
+    Route::get('/jenis', [LeaveController::class, 'jenis'])->name('jenis');
+    Route::get('/sisa', [LeaveController::class, 'sisa'])->name('sisa');
+    Route::get('/history', [LeaveController::class, 'history'])->name('history');
+});
+Route::resource('leave', LeaveController::class);
+Route::pattern('leave', '[0-9]+');
+
+// Izin & Sakit
+Route::prefix('izin')->name('izin.')->group(function () {
+    Route::get('/surat-dokter', [IzinController::class, 'suratDokter'])->name('surat-dokter');
+    Route::get('/approval', [IzinController::class, 'approval'])->name('approval');
+    Route::get('/history', [IzinController::class, 'history'])->name('history');
+});
+Route::resource('izin', IzinController::class);
+Route::pattern('izin', '[0-9]+');
+
+// Payroll
+Route::prefix('payroll')->name('payroll.')->group(function () {
+    Route::get('/', [PayrollController::class, 'index'])->name('index');
+    Route::get('/slip', [PayrollController::class, 'slip'])->name('slip');
+    Route::get('/generate', [PayrollController::class, 'generate'])->name('generate');
+    Route::get('/gaji-pokok', [PayrollController::class, 'gajiPokok'])->name('gaji-pokok');
+    Route::get('/tunjangan', [PayrollController::class, 'tunjangan'])->name('tunjangan');
+    Route::get('/bonus', [PayrollController::class, 'bonus'])->name('bonus');
+    Route::get('/potongan', [PayrollController::class, 'potongan'])->name('potongan');
+    Route::get('/bpjs', [PayrollController::class, 'bpjs'])->name('bpjs');
+    Route::get('/pajak', [PayrollController::class, 'pajak'])->name('pajak');
+    Route::get('/rekap', [PayrollController::class, 'rekap'])->name('rekap');
+});
+
+// Performance
+Route::prefix('performance')->name('performance.')->group(function () {
+    Route::get('/', [PerformanceController::class, 'index'])->name('index');
+    Route::get('/kpi', [PerformanceController::class, 'kpi'])->name('kpi');
+    Route::get('/assessment', [PerformanceController::class, 'assessment'])->name('assessment');
+    Route::get('/bulanan', [PerformanceController::class, 'bulanan'])->name('bulanan');
+    Route::get('/tahunan', [PerformanceController::class, 'tahunan'])->name('tahunan');
+    Route::get('/target', [PerformanceController::class, 'target'])->name('target');
+    Route::get('/feedback', [PerformanceController::class, 'feedback'])->name('feedback');
+});
+
+// Training
+Route::prefix('training')->name('training.')->group(function () {
+    Route::get('/peserta', [TrainingController::class, 'peserta'])->name('peserta');
+    Route::get('/sertifikat', [TrainingController::class, 'sertifikat'])->name('sertifikat');
+    Route::get('/nilai', [TrainingController::class, 'nilai'])->name('nilai');
+});
+Route::resource('training', TrainingController::class);
+Route::pattern('training', '[0-9]+');
+
+// Asset Management
+Route::prefix('asset')->name('asset.')->group(function () {
+    Route::get('/peminjaman', [AssetController::class, 'peminjaman'])->name('peminjaman');
+    Route::get('/pengembalian', [AssetController::class, 'pengembalian'])->name('pengembalian');
+});
+Route::resource('asset', AssetController::class);
+Route::pattern('asset', '[0-9]+');
+
+// Pengumuman
+Route::prefix('pengumuman')->name('pengumuman.')->group(function () {
+    Route::get('/event', [PengumumanController::class, 'event'])->name('event');
+    Route::get('/birthday', [PengumumanController::class, 'birthday'])->name('birthday');
+    Route::get('/libur-nasional', [PengumumanController::class, 'liburNasional'])->name('libur-nasional');
+});
+Route::resource('pengumuman', PengumumanController::class);
+Route::pattern('pengumuman', '[0-9]+');
+
+// Dokumen
+Route::prefix('dokumen')->name('dokumen.')->group(function () {
+    Route::get('/sop', [DokumenController::class, 'sop'])->name('sop');
+    Route::get('/kontrak', [DokumenController::class, 'kontrak'])->name('kontrak');
+    Route::get('/pkwt', [DokumenController::class, 'pkwt'])->name('pkwt');
+    Route::get('/nda', [DokumenController::class, 'nda'])->name('nda');
+    Route::get('/surat-peringatan', [DokumenController::class, 'suratPeringatan'])->name('surat-peringatan');
+});
+Route::resource('dokumen', DokumenController::class);
+Route::pattern('dokumen', '[0-9]+');
+
+// Resign
+Route::prefix('resign')->name('resign.')->group(function () {
+    Route::get('/exit-interview', [ResignController::class, 'exitInterview'])->name('exit-interview');
+    Route::get('/clearance', [ResignController::class, 'clearance'])->name('clearance');
+    Route::get('/pengembalian-asset', [ResignController::class, 'pengembalianAsset'])->name('pengembalian-asset');
+});
+Route::resource('resign', ResignController::class);
+Route::pattern('resign', '[0-9]+');
+
+// Laporan
+Route::prefix('laporan')->name('laporan.')->group(function () {
+    Route::get('/', [LaporanController::class, 'index'])->name('index');
+    Route::get('/attendance', [LaporanController::class, 'attendance'])->name('attendance');
+    Route::get('/leave', [LaporanController::class, 'leave'])->name('leave');
+    Route::get('/payroll', [LaporanController::class, 'payroll'])->name('payroll');
+    Route::get('/employee', [LaporanController::class, 'employee'])->name('employee');
+    Route::get('/turnover', [LaporanController::class, 'turnover'])->name('turnover');
+    Route::get('/lembur', [LaporanController::class, 'lembur'])->name('lembur');
+});
+
+// User Management
+Route::prefix('users')->name('users.')->group(function () {
+    Route::get('/', [UserManagementController::class, 'index'])->name('index');
+    Route::get('/create', [UserManagementController::class, 'create'])->name('create');
+    Route::post('/', [UserManagementController::class, 'store'])->name('store');
+});
+
+// Roles & Permissions
+Route::prefix('roles')->name('roles.')->group(function () {
+    Route::get('/', [UserManagementController::class, 'roles'])->name('index');
+    Route::get('/permissions', [UserManagementController::class, 'permissions'])->name('permissions');
+});
