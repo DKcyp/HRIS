@@ -20,6 +20,21 @@ class OrganisasiController extends Controller
         return view('organisasi.division', compact('divisions'));
     }
 
+    public function divisionStore(Request $request)
+    {
+        return redirect()->route('organisasi.division')->with('success', 'Data divisi berhasil ditambahkan');
+    }
+
+    public function divisionUpdate(Request $request, $id)
+    {
+        return redirect()->route('organisasi.division')->with('success', 'Data divisi berhasil diupdate');
+    }
+
+    public function divisionDestroy($id)
+    {
+        return redirect()->route('organisasi.division')->with('success', 'Data divisi berhasil dihapus');
+    }
+
     public function department()
     {
         $departments = collect([
@@ -34,6 +49,21 @@ class OrganisasiController extends Controller
         ]);
 
         return view('organisasi.department', compact('departments'));
+    }
+
+    public function departmentStore(Request $request)
+    {
+        return redirect()->route('organisasi.department')->with('success', 'Data departemen berhasil ditambahkan');
+    }
+
+    public function departmentUpdate(Request $request, $id)
+    {
+        return redirect()->route('organisasi.department')->with('success', 'Data departemen berhasil diupdate');
+    }
+
+    public function departmentDestroy($id)
+    {
+        return redirect()->route('organisasi.department')->with('success', 'Data departemen berhasil dihapus');
     }
 
     public function position()
@@ -54,6 +84,21 @@ class OrganisasiController extends Controller
         return view('organisasi.position', compact('positions'));
     }
 
+    public function positionStore(Request $request)
+    {
+        return redirect()->route('organisasi.position')->with('success', 'Data jabatan berhasil ditambahkan');
+    }
+
+    public function positionUpdate(Request $request, $id)
+    {
+        return redirect()->route('organisasi.position')->with('success', 'Data jabatan berhasil diupdate');
+    }
+
+    public function positionDestroy($id)
+    {
+        return redirect()->route('organisasi.position')->with('success', 'Data jabatan berhasil dihapus');
+    }
+
     public function grade()
     {
         $grades = collect([
@@ -69,6 +114,21 @@ class OrganisasiController extends Controller
         return view('organisasi.grade', compact('grades'));
     }
 
+    public function gradeStore(Request $request)
+    {
+        return redirect()->route('organisasi.grade')->with('success', 'Data grade berhasil ditambahkan');
+    }
+
+    public function gradeUpdate(Request $request, $id)
+    {
+        return redirect()->route('organisasi.grade')->with('success', 'Data grade berhasil diupdate');
+    }
+
+    public function gradeDestroy($id)
+    {
+        return redirect()->route('organisasi.grade')->with('success', 'Data grade berhasil dihapus');
+    }
+
     public function location()
     {
         $locations = collect([
@@ -80,6 +140,21 @@ class OrganisasiController extends Controller
         ]);
 
         return view('organisasi.location', compact('locations'));
+    }
+
+    public function locationStore(Request $request)
+    {
+        return redirect()->route('organisasi.location')->with('success', 'Data lokasi berhasil ditambahkan');
+    }
+
+    public function locationUpdate(Request $request, $id)
+    {
+        return redirect()->route('organisasi.location')->with('success', 'Data lokasi berhasil diupdate');
+    }
+
+    public function locationDestroy($id)
+    {
+        return redirect()->route('organisasi.location')->with('success', 'Data lokasi berhasil dihapus');
     }
 
     public function shift()
@@ -94,5 +169,20 @@ class OrganisasiController extends Controller
         ]);
 
         return view('organisasi.shift', compact('shifts'));
+    }
+
+    public function shiftStore(Request $request)
+    {
+        return redirect()->route('organisasi.shift')->with('success', 'Data shift berhasil ditambahkan');
+    }
+
+    public function shiftUpdate(Request $request, $id)
+    {
+        return redirect()->route('organisasi.shift')->with('success', 'Data shift berhasil diupdate');
+    }
+
+    public function shiftDestroy($id)
+    {
+        return redirect()->route('organisasi.shift')->with('success', 'Data shift berhasil dihapus');
     }
 }

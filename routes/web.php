@@ -38,11 +38,34 @@ Route::pattern('employee', '[0-9]+');
 // Organisasi
 Route::prefix('organisasi')->name('organisasi.')->group(function () {
     Route::get('/division', [OrganisasiController::class, 'division'])->name('division');
+    Route::post('/division', [OrganisasiController::class, 'divisionStore'])->name('division.store');
+    Route::put('/division/{id}', [OrganisasiController::class, 'divisionUpdate'])->name('division.update');
+    Route::delete('/division/{id}', [OrganisasiController::class, 'divisionDestroy'])->name('division.destroy');
+
     Route::get('/department', [OrganisasiController::class, 'department'])->name('department');
+    Route::post('/department', [OrganisasiController::class, 'departmentStore'])->name('department.store');
+    Route::put('/department/{id}', [OrganisasiController::class, 'departmentUpdate'])->name('department.update');
+    Route::delete('/department/{id}', [OrganisasiController::class, 'departmentDestroy'])->name('department.destroy');
+
     Route::get('/position', [OrganisasiController::class, 'position'])->name('position');
+    Route::post('/position', [OrganisasiController::class, 'positionStore'])->name('position.store');
+    Route::put('/position/{id}', [OrganisasiController::class, 'positionUpdate'])->name('position.update');
+    Route::delete('/position/{id}', [OrganisasiController::class, 'positionDestroy'])->name('position.destroy');
+
     Route::get('/grade', [OrganisasiController::class, 'grade'])->name('grade');
+    Route::post('/grade', [OrganisasiController::class, 'gradeStore'])->name('grade.store');
+    Route::put('/grade/{id}', [OrganisasiController::class, 'gradeUpdate'])->name('grade.update');
+    Route::delete('/grade/{id}', [OrganisasiController::class, 'gradeDestroy'])->name('grade.destroy');
+
     Route::get('/location', [OrganisasiController::class, 'location'])->name('location');
+    Route::post('/location', [OrganisasiController::class, 'locationStore'])->name('location.store');
+    Route::put('/location/{id}', [OrganisasiController::class, 'locationUpdate'])->name('location.update');
+    Route::delete('/location/{id}', [OrganisasiController::class, 'locationDestroy'])->name('location.destroy');
+
     Route::get('/shift', [OrganisasiController::class, 'shift'])->name('shift');
+    Route::post('/shift', [OrganisasiController::class, 'shiftStore'])->name('shift.store');
+    Route::put('/shift/{id}', [OrganisasiController::class, 'shiftUpdate'])->name('shift.update');
+    Route::delete('/shift/{id}', [OrganisasiController::class, 'shiftDestroy'])->name('shift.destroy');
 });
 
 // Recruitment
