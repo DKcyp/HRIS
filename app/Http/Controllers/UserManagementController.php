@@ -16,26 +16,31 @@ class UserManagementController extends Controller
             (object)['id'=>5,'username'=>'it_admin','nama'=>'Rizky Pratama','email'=>'rizky@hris.com','role'=>'IT Admin','status'=>'aktif','last_login'=>'2024-04-10 07:30:00'],
         ]);
 
-        return view('users.index', compact('users'));
-    }
-
-    public function create()
-    {
         $roles = collect([
-            (object)['id'=>1,'nama'=>'Super Admin','deskripsi'=>'Akses penuh ke semua modul','jumlah_user'=>1],
-            (object)['id'=>2,'nama'=>'HRD Manager','deskripsi'=>'Kelola data karyawan, cuti, dan rekrutmen','jumlah_user'=>2],
-            (object)['id'=>3,'nama'=>'Payroll Staff','deskripsi'=>'Kelola gaji dan tunjangan','jumlah_user'=>1],
-            (object)['id'=>4,'nama'=>'Finance Manager','deskripsi'=>'Kelola keuangan dan budget','jumlah_user'=>1],
-            (object)['id'=>5,'nama'=>'IT Admin','deskripsi'=>'Kelola sistem dan infrastruktur','jumlah_user'=>1],
-            (object)['id'=>6,'nama'=>'Employee','deskripsi'=>'Akses terbatas untuk karyawan biasa','jumlah_user'=>50],
+            (object)['id'=>1,'nama'=>'Super Admin'],
+            (object)['id'=>2,'nama'=>'HRD Manager'],
+            (object)['id'=>3,'nama'=>'Payroll Staff'],
+            (object)['id'=>4,'nama'=>'Finance Manager'],
+            (object)['id'=>5,'nama'=>'IT Admin'],
+            (object)['id'=>6,'nama'=>'Employee'],
         ]);
 
-        return view('users.create', compact('roles'));
+        return view('users.index', compact('users', 'roles'));
     }
 
     public function store(Request $request)
     {
         return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
+    }
+
+    public function update(Request $request, $id)
+    {
+        return redirect()->route('users.index')->with('success', 'User berhasil diupdate');
+    }
+
+    public function destroy($id)
+    {
+        return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
     }
 
     public function roles()

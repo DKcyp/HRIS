@@ -385,8 +385,9 @@ Route::prefix('laporan')->name('laporan.')->group(function () {
 // User Management
 Route::prefix('users')->name('users.')->group(function () {
     Route::get('/', [UserManagementController::class, 'index'])->name('index');
-    Route::get('/create', [UserManagementController::class, 'create'])->name('create');
     Route::post('/', [UserManagementController::class, 'store'])->name('store');
+    Route::put('/{id}', [UserManagementController::class, 'update'])->name('update');
+    Route::delete('/{id}', [UserManagementController::class, 'destroy'])->name('destroy');
 });
 
 // Roles & Permissions
