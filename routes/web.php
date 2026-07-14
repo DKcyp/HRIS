@@ -129,22 +129,40 @@ Route::prefix('attendance')->name('attendance.')->group(function () {
 
 // Leave Management
 Route::prefix('leave')->name('leave.')->group(function () {
+    Route::get('/', [LeaveController::class, 'index'])->name('index');
+    Route::post('/', [LeaveController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [LeaveController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [LeaveController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/approval', [LeaveController::class, 'approval'])->name('approval');
+    Route::post('/approval', [LeaveController::class, 'approvalStore'])->name('approval.store');
+
     Route::get('/jenis', [LeaveController::class, 'jenis'])->name('jenis');
+    Route::post('/jenis', [LeaveController::class, 'jenisStore'])->name('jenis.store');
+    Route::put('/jenis/{id}', [LeaveController::class, 'jenisUpdate'])->name('jenis.update');
+    Route::delete('/jenis/{id}', [LeaveController::class, 'jenisDestroy'])->name('jenis.destroy');
+
     Route::get('/sisa', [LeaveController::class, 'sisa'])->name('sisa');
     Route::get('/history', [LeaveController::class, 'history'])->name('history');
 });
-Route::resource('leave', LeaveController::class);
-Route::pattern('leave', '[0-9]+');
 
 // Izin & Sakit
 Route::prefix('izin')->name('izin.')->group(function () {
+    Route::get('/', [IzinController::class, 'index'])->name('index');
+    Route::post('/', [IzinController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [IzinController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [IzinController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/surat-dokter', [IzinController::class, 'suratDokter'])->name('surat-dokter');
+    Route::post('/surat-dokter', [IzinController::class, 'suratDokterStore'])->name('surat-dokter.store');
+    Route::put('/surat-dokter/{id}', [IzinController::class, 'suratDokterUpdate'])->name('surat-dokter.update');
+    Route::delete('/surat-dokter/{id}', [IzinController::class, 'suratDokterDestroy'])->name('surat-dokter.destroy');
+
     Route::get('/approval', [IzinController::class, 'approval'])->name('approval');
+    Route::post('/approval', [IzinController::class, 'approvalStore'])->name('approval.store');
+
     Route::get('/history', [IzinController::class, 'history'])->name('history');
 });
-Route::resource('izin', IzinController::class);
-Route::pattern('izin', '[0-9]+');
 
 // Payroll
 Route::prefix('payroll')->name('payroll.')->group(function () {
