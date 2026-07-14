@@ -276,11 +276,21 @@ Route::prefix('training')->name('training.')->group(function () {
 
 // Asset Management
 Route::prefix('asset')->name('asset.')->group(function () {
+    Route::get('/', [AssetController::class, 'index'])->name('index');
+    Route::post('/', [AssetController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [AssetController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [AssetController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/peminjaman', [AssetController::class, 'peminjaman'])->name('peminjaman');
+    Route::post('/peminjaman', [AssetController::class, 'peminjamanStore'])->name('peminjaman.store');
+    Route::put('/peminjaman/{id}', [AssetController::class, 'peminjamanUpdate'])->name('peminjaman.update');
+    Route::delete('/peminjaman/{id}', [AssetController::class, 'peminjamanDestroy'])->name('peminjaman.destroy');
+
     Route::get('/pengembalian', [AssetController::class, 'pengembalian'])->name('pengembalian');
+    Route::post('/pengembalian', [AssetController::class, 'pengembalianStore'])->name('pengembalian.store');
+    Route::put('/pengembalian/{id}', [AssetController::class, 'pengembalianUpdate'])->name('pengembalian.update');
+    Route::delete('/pengembalian/{id}', [AssetController::class, 'pengembalianDestroy'])->name('pengembalian.destroy');
 });
-Route::resource('asset', AssetController::class);
-Route::pattern('asset', '[0-9]+');
 
 // Pengumuman
 Route::prefix('pengumuman')->name('pengumuman.')->group(function () {
