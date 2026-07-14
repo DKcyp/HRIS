@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserAuth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserManagementController extends Controller
 {
     public function index()
     {
-        $users = collect([
-            (object)['id'=>1,'username'=>'admin','nama'=>'Administrator','email'=>'admin@hris.com','role'=>'Super Admin','status'=>'aktif','last_login'=>'2024-04-10 08:30:00'],
-            (object)['id'=>2,'username'=>'hrd_manager','nama'=>'Hendra Kusuma','email'=>'hendra@hris.com','role'=>'HRD Manager','status'=>'aktif','last_login'=>'2024-04-10 09:00:00'],
-            (object)['id'=>3,'username'=>'payroll_staff','nama'=>'Rina Wulandari','email'=>'rina@hris.com','role'=>'Payroll Staff','status'=>'aktif','last_login'=>'2024-04-10 08:45:00'],
-            (object)['id'=>4,'username'=>'finance_mgr','nama'=>'Budi Setiawan','email'=>'budi@hris.com','role'=>'Finance Manager','status'=>'aktif','last_login'=>'2024-04-09 14:00:00'],
-            (object)['id'=>5,'username'=>'it_admin','nama'=>'Rizky Pratama','email'=>'rizky@hris.com','role'=>'IT Admin','status'=>'aktif','last_login'=>'2024-04-10 07:30:00'],
-        ]);
+        $users = UserAuth::orderBy('id')->get();
 
         $roles = collect([
             (object)['id'=>1,'nama'=>'Super Admin'],
@@ -30,16 +26,62 @@ class UserManagementController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'username' => 'required|string|max:255|unique:global.user_auth,username',
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:global.user_auth,email',
+            'password' => 'required|string|min:6',
+            'role' => 'required|string',
+            'status' => 'required|in:aktif,non-aktif',
+        ]);
+
+        UserAuth::create([
+            'username' => $request->username,
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'status' => $request->status,
+        ]);
+
         return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
     }
 
     public function update(Request $request, $id)
     {
+        $user = UserAuth::findOrFail($id);
+
+        $request->validate([
+            'username' => 'required|string|max:255|unique:global.user_auth,username,' . $id,
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:global.user_auth,email,' . $id,
+            'password' => 'nullable|string|min:6',
+            'role' => 'required|string',
+            'status' => 'required|in:aktif,non-aktif',
+        ]);
+
+        $data = [
+            'username' => $request->username,
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'role' => $request->role,
+            'status' => $request->status,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
         return redirect()->route('users.index')->with('success', 'User berhasil diupdate');
     }
 
     public function destroy($id)
     {
+        $user = UserAuth::findOrFail($id);
+        $user->delete();
+
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
     }
 
