@@ -216,12 +216,39 @@ Route::prefix('payroll')->name('payroll.')->group(function () {
 // Performance
 Route::prefix('performance')->name('performance.')->group(function () {
     Route::get('/', [PerformanceController::class, 'index'])->name('index');
+    Route::post('/', [PerformanceController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [PerformanceController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [PerformanceController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/kpi', [PerformanceController::class, 'kpi'])->name('kpi');
+    Route::post('/kpi', [PerformanceController::class, 'kpiStore'])->name('kpi.store');
+    Route::put('/kpi/{id}', [PerformanceController::class, 'kpiUpdate'])->name('kpi.update');
+    Route::delete('/kpi/{id}', [PerformanceController::class, 'kpiDestroy'])->name('kpi.destroy');
+
     Route::get('/assessment', [PerformanceController::class, 'assessment'])->name('assessment');
+    Route::post('/assessment', [PerformanceController::class, 'assessmentStore'])->name('assessment.store');
+    Route::put('/assessment/{id}', [PerformanceController::class, 'assessmentUpdate'])->name('assessment.update');
+    Route::delete('/assessment/{id}', [PerformanceController::class, 'assessmentDestroy'])->name('assessment.destroy');
+
     Route::get('/bulanan', [PerformanceController::class, 'bulanan'])->name('bulanan');
+    Route::post('/bulanan', [PerformanceController::class, 'bulananStore'])->name('bulanan.store');
+    Route::put('/bulanan/{id}', [PerformanceController::class, 'bulananUpdate'])->name('bulanan.update');
+    Route::delete('/bulanan/{id}', [PerformanceController::class, 'bulananDestroy'])->name('bulanan.destroy');
+
     Route::get('/tahunan', [PerformanceController::class, 'tahunan'])->name('tahunan');
+    Route::post('/tahunan', [PerformanceController::class, 'tahunanStore'])->name('tahunan.store');
+    Route::put('/tahunan/{id}', [PerformanceController::class, 'tahunanUpdate'])->name('tahunan.update');
+    Route::delete('/tahunan/{id}', [PerformanceController::class, 'tahunanDestroy'])->name('tahunan.destroy');
+
     Route::get('/target', [PerformanceController::class, 'target'])->name('target');
+    Route::post('/target', [PerformanceController::class, 'targetStore'])->name('target.store');
+    Route::put('/target/{id}', [PerformanceController::class, 'targetUpdate'])->name('target.update');
+    Route::delete('/target/{id}', [PerformanceController::class, 'targetDestroy'])->name('target.destroy');
+
     Route::get('/feedback', [PerformanceController::class, 'feedback'])->name('feedback');
+    Route::post('/feedback', [PerformanceController::class, 'feedbackStore'])->name('feedback.store');
+    Route::put('/feedback/{id}', [PerformanceController::class, 'feedbackUpdate'])->name('feedback.update');
+    Route::delete('/feedback/{id}', [PerformanceController::class, 'feedbackDestroy'])->name('feedback.destroy');
 });
 
 // Training
