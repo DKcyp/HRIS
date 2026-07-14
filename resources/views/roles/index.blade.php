@@ -6,7 +6,7 @@
 <div class="card">
     <div class="card-header bg-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Data Role & Permission</h5>
-        <a href="{{ route('roles.permissions') }}" class="btn btn-sm btn-outline-primary"><i class="fas fa-key me-1"></i> Kelola Permission</a>
+        <a href="{{ route('roles.permissions') }}" class="btn btn-sm btn-outline-primary" onclick="navigateTo(event, '{{ route('roles.permissions') }}')"><i class="fas fa-key me-1"></i> Kelola Permission</a>
     </div>
     <div class="card-body">
         <div class="table-responsive">

@@ -216,10 +216,9 @@
         </div>
     </div>
 </div>
-@endsection
 
-@push('scripts')
 <script>
+(function(){
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
     function showAlert(type, message) {
@@ -244,7 +243,7 @@
         let html = '<div class="alert alert-danger"><ul class="mb-0">';
         for (const key in errors) {
             errors[key].forEach(msg => {
-                html += `<li>${msg}</li>`;
+                html += '<li>' + msg + '</li>';
             });
         }
         html += '</ul></div>';
@@ -266,13 +265,13 @@
         });
     }
 
-    function openAddModal() {
+    window.openAddModal = function() {
         document.getElementById('addForm').reset();
         clearErrors('add');
         new bootstrap.Modal(document.getElementById('addModal')).show();
-    }
+    };
 
-    function openEditModal(id, username, nama, email, role, status) {
+    window.openEditModal = function(id, username, nama, email, role, status) {
         document.getElementById('edit-id').value = id;
         document.getElementById('edit-username').value = username;
         document.getElementById('edit-nama').value = nama;
@@ -282,107 +281,104 @@
         document.getElementById('edit-password').value = '';
         clearErrors('edit');
         new bootstrap.Modal(document.getElementById('editModal')).show();
-    }
+    };
 
-    function openDeleteModal(id, nama, username) {
+    window.openDeleteModal = function(id, nama, username) {
         document.getElementById('delete-id').value = id;
         document.getElementById('delete-nama').textContent = nama;
         document.getElementById('delete-username').textContent = username;
         new bootstrap.Modal(document.getElementById('deleteModal')).show();
-    }
+    };
 
     // Add User
-    document.getElementById('addForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const form = this;
-        const data = new FormData(form);
-
-        fetch('{{ route("users.store") }}', {
-            method: 'POST',
-            body: data,
-            headers: {
-                'X-CSRF-TOKEN': csrfToken,
-                'X-Requested-With': 'XMLHttpRequest',
-            }
-        })
-        .then(res => res.json())
-        .then(json => {
-            if (json.success) {
-                bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
-                showAlert('success', json.message);
-                reloadTable();
-            } else if (json.errors) {
-                showErrors('add', json.errors);
-            } else {
-                showAlert('danger', json.message);
-            }
-        })
-        .catch(() => showAlert('danger', 'Terjadi kesalahan jaringan'));
-    });
+    var addForm = document.getElementById('addForm');
+    if (addForm) {
+        addForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var data = new FormData(this);
+            fetch('{{ route("users.store") }}', {
+                method: 'POST',
+                body: data,
+                headers: { 'X-CSRF-TOKEN': csrfToken, 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(json => {
+                if (json.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('addModal')).hide();
+                    showAlert('success', json.message);
+                    reloadTable();
+                } else if (json.errors) {
+                    showErrors('add', json.errors);
+                } else {
+                    showAlert('danger', json.message);
+                }
+            })
+            .catch(() => showAlert('danger', 'Terjadi kesalahan jaringan'));
+        });
+    }
 
     // Edit User
-    document.getElementById('editForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const id = document.getElementById('edit-id').value;
-        const data = new FormData();
-        data.append('_method', 'PUT');
-        data.append('username', document.getElementById('edit-username').value);
-        data.append('nama', document.getElementById('edit-nama').value);
-        data.append('email', document.getElementById('edit-email').value);
-        data.append('role', document.getElementById('edit-role').value);
-        data.append('status', document.getElementById('edit-status').value);
-        const password = document.getElementById('edit-password').value;
-        if (password) data.append('password', password);
-
-        fetch(`/users/${id}`, {
-            method: 'POST',
-            body: data,
-            headers: {
-                'X-CSRF-TOKEN': csrfToken,
-                'X-Requested-With': 'XMLHttpRequest',
-            }
-        })
-        .then(res => res.json())
-        .then(json => {
-            if (json.success) {
-                bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-                showAlert('success', json.message);
-                reloadTable();
-            } else if (json.errors) {
-                showErrors('edit', json.errors);
-            } else {
-                showAlert('danger', json.message);
-            }
-        })
-        .catch(() => showAlert('danger', 'Terjadi kesalahan jaringan'));
-    });
+    var editForm = document.getElementById('editForm');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var id = document.getElementById('edit-id').value;
+            var data = new FormData();
+            data.append('_method', 'PUT');
+            data.append('username', document.getElementById('edit-username').value);
+            data.append('nama', document.getElementById('edit-nama').value);
+            data.append('email', document.getElementById('edit-email').value);
+            data.append('role', document.getElementById('edit-role').value);
+            data.append('status', document.getElementById('edit-status').value);
+            var password = document.getElementById('edit-password').value;
+            if (password) data.append('password', password);
+            fetch('/users/' + id, {
+                method: 'POST',
+                body: data,
+                headers: { 'X-CSRF-TOKEN': csrfToken, 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(json => {
+                if (json.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                    showAlert('success', json.message);
+                    reloadTable();
+                } else if (json.errors) {
+                    showErrors('edit', json.errors);
+                } else {
+                    showAlert('danger', json.message);
+                }
+            })
+            .catch(() => showAlert('danger', 'Terjadi kesalahan jaringan'));
+        });
+    }
 
     // Delete User
-    document.getElementById('deleteForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const id = document.getElementById('delete-id').value;
-        const data = new FormData();
-        data.append('_method', 'DELETE');
-
-        fetch(`/users/${id}`, {
-            method: 'POST',
-            body: data,
-            headers: {
-                'X-CSRF-TOKEN': csrfToken,
-                'X-Requested-With': 'XMLHttpRequest',
-            }
-        })
-        .then(res => res.json())
-        .then(json => {
-            if (json.success) {
-                bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
-                showAlert('success', json.message);
-                reloadTable();
-            } else {
-                showAlert('danger', json.message);
-            }
-        })
-        .catch(() => showAlert('danger', 'Terjadi kesalahan jaringan'));
-    });
+    var deleteForm = document.getElementById('deleteForm');
+    if (deleteForm) {
+        deleteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var id = document.getElementById('delete-id').value;
+            var data = new FormData();
+            data.append('_method', 'DELETE');
+            fetch('/users/' + id, {
+                method: 'POST',
+                body: data,
+                headers: { 'X-CSRF-TOKEN': csrfToken, 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(json => {
+                if (json.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+                    showAlert('success', json.message);
+                    reloadTable();
+                } else {
+                    showAlert('danger', json.message);
+                }
+            })
+            .catch(() => showAlert('danger', 'Terjadi kesalahan jaringan'));
+        });
+    }
+})();
 </script>
-@endpush
+@endsection

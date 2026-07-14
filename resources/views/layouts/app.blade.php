@@ -753,11 +753,11 @@
                 <i class="fas fa-chevron-right toggle-icon"></i>
             </button>
             <div class="collapse submenu {{ $isActiveSystem ? 'show' : '' }}" id="submenu-system">
-                <a href="{{ route('users.index') }}" class="sidebar-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                <a href="{{ route('users.index') }}" class="sidebar-link {{ request()->routeIs('users.*') ? 'active' : '' }}" onclick="navigateTo(event, '{{ route('users.index') }}')" data-spa="{{ route('users.index') }}">
                     <i class="fas fa-users-cog"></i>
                     <span>User Management</span>
                 </a>
-                <a href="{{ route('roles.index') }}" class="sidebar-link {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                <a href="{{ route('roles.index') }}" class="sidebar-link {{ request()->routeIs('roles.*') ? 'active' : '' }}" onclick="navigateTo(event, '{{ route('roles.index') }}')" data-spa="{{ route('roles.index') }}">
                     <i class="fas fa-user-shield"></i>
                     <span>Role & Permission</span>
                 </a>
@@ -857,13 +857,125 @@
         </div>
         
         <!-- Content -->
-        <div class="content-area">
+        <div class="content-area" id="content-area">
             @yield('content')
         </div>
     </div>
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    (function() {
+        const contentArea = document.getElementById('content-area');
+        let currentUrl = window.location.href;
+
+        // Navigate via SPA
+        window.navigateTo = function(e, url) {
+            e.preventDefault();
+            if (url === currentUrl) return;
+            loadPage(url);
+        };
+
+        function loadPage(url, pushState) {
+            if (pushState === undefined) pushState = true;
+
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'text/html',
+                }
+            })
+            .then(res => res.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                const newContent = doc.getElementById('content-area');
+                const newPageTitle = doc.querySelector('.page-title');
+                const newTitle = doc.querySelector('title');
+
+                if (newContent) {
+                    // Extract scripts before replacing content
+                    const scripts = newContent.querySelectorAll('script');
+                    const scriptContents = [];
+                    scripts.forEach(s => {
+                        scriptContents.push(s.textContent);
+                        s.remove();
+                    });
+
+                    // Replace content (without scripts)
+                    contentArea.innerHTML = newContent.innerHTML;
+
+                    // Re-execute scripts
+                    scriptContents.forEach(code => {
+                        const s = document.createElement('script');
+                        s.textContent = code;
+                        document.body.appendChild(s);
+                        document.body.removeChild(s);
+                    });
+                }
+
+                // Update page title in topbar
+                if (newPageTitle) {
+                    document.querySelector('.page-title').textContent = newPageTitle.textContent.trim();
+                }
+
+                // Update browser title
+                if (newTitle) {
+                    document.title = newTitle.textContent;
+                }
+
+                // Update URL
+                if (pushState) {
+                    history.pushState({}, '', url);
+                }
+                currentUrl = url;
+
+                // Update active menu
+                updateActiveMenu(url);
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+            })
+            .catch(err => {
+                console.error('SPA navigation error:', err);
+                window.location.href = url;
+            });
+        }
+
+        function updateActiveMenu(url) {
+            document.querySelectorAll('[data-spa]').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            document.querySelectorAll('[data-spa]').forEach(link => {
+                const href = link.getAttribute('data-spa');
+                if (url === href || url.replace(/\/$/, '') === href.replace(/\/$/, '')) {
+                    link.classList.add('active');
+
+                    const submenu = link.closest('.submenu');
+                    if (submenu) {
+                        submenu.classList.add('show');
+                        const toggle = document.querySelector('[data-bs-target="#' + submenu.id + '"]');
+                        if (toggle) {
+                            toggle.setAttribute('aria-expanded', 'true');
+                            toggle.classList.add('active');
+                        }
+                    }
+                }
+            });
+        }
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', function(e) {
+            loadPage(window.location.href, false);
+        });
+
+        // Handle initial page
+        updateActiveMenu(window.location.href);
+    })();
+    </script>
     
     @stack('scripts')
 </body>

@@ -6,7 +6,7 @@
 <div class="card">
     <div class="card-header bg-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="fas fa-key me-2"></i>Kelola Permission</h5>
-        <a href="{{ route('roles.index') }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i> Kembali</a>
+        <a href="{{ route('roles.index') }}" class="btn btn-sm btn-outline-secondary" onclick="navigateTo(event, '{{ route('roles.index') }}')"><i class="fas fa-arrow-left me-1"></i> Kembali</a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
