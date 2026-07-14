@@ -39,7 +39,7 @@ class UserManagementController extends Controller
             'username' => $request->username,
             'nama' => $request->nama,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'role' => $request->role,
             'status' => $request->status,
         ]);
@@ -52,9 +52,9 @@ class UserManagementController extends Controller
         $user = UserAuth::findOrFail($id);
 
         $request->validate([
-            'username' => 'required|string|max:255|unique:global.user_auth,username,' . $id,
+            'username' => 'required|string|max:255',
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:global.user_auth,email,' . $id,
+            'email' => 'required|email|max:255',
             'password' => 'nullable|string|min:6',
             'role' => 'required|string',
             'status' => 'required|in:aktif,non-aktif',
@@ -69,7 +69,7 @@ class UserManagementController extends Controller
         ];
 
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+            $data['password'] = $request->password;
         }
 
         $user->update($data);
