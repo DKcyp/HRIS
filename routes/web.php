@@ -167,15 +167,50 @@ Route::prefix('izin')->name('izin.')->group(function () {
 // Payroll
 Route::prefix('payroll')->name('payroll.')->group(function () {
     Route::get('/', [PayrollController::class, 'index'])->name('index');
+    Route::post('/', [PayrollController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [PayrollController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [PayrollController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/slip', [PayrollController::class, 'slip'])->name('slip');
+    Route::post('/slip', [PayrollController::class, 'slipStore'])->name('slip.store');
+
     Route::get('/generate', [PayrollController::class, 'generate'])->name('generate');
+    Route::post('/generate', [PayrollController::class, 'generateStore'])->name('generate.store');
+
     Route::get('/gaji-pokok', [PayrollController::class, 'gajiPokok'])->name('gaji-pokok');
+    Route::post('/gaji-pokok', [PayrollController::class, 'gajiPokokStore'])->name('gaji-pokok.store');
+    Route::put('/gaji-pokok/{id}', [PayrollController::class, 'gajiPokokUpdate'])->name('gaji-pokok.update');
+    Route::delete('/gaji-pokok/{id}', [PayrollController::class, 'gajiPokokDestroy'])->name('gaji-pokok.destroy');
+
     Route::get('/tunjangan', [PayrollController::class, 'tunjangan'])->name('tunjangan');
+    Route::post('/tunjangan', [PayrollController::class, 'tunjanganStore'])->name('tunjangan.store');
+    Route::put('/tunjangan/{id}', [PayrollController::class, 'tunjanganUpdate'])->name('tunjangan.update');
+    Route::delete('/tunjangan/{id}', [PayrollController::class, 'tunjanganDestroy'])->name('tunjangan.destroy');
+
     Route::get('/bonus', [PayrollController::class, 'bonus'])->name('bonus');
+    Route::post('/bonus', [PayrollController::class, 'bonusStore'])->name('bonus.store');
+    Route::put('/bonus/{id}', [PayrollController::class, 'bonusUpdate'])->name('bonus.update');
+    Route::delete('/bonus/{id}', [PayrollController::class, 'bonusDestroy'])->name('bonus.destroy');
+
     Route::get('/potongan', [PayrollController::class, 'potongan'])->name('potongan');
+    Route::post('/potongan', [PayrollController::class, 'potonganStore'])->name('potongan.store');
+    Route::put('/potongan/{id}', [PayrollController::class, 'potonganUpdate'])->name('potongan.update');
+    Route::delete('/potongan/{id}', [PayrollController::class, 'potonganDestroy'])->name('potongan.destroy');
+
     Route::get('/bpjs', [PayrollController::class, 'bpjs'])->name('bpjs');
+    Route::post('/bpjs', [PayrollController::class, 'bpjsStore'])->name('bpjs.store');
+    Route::put('/bpjs/{id}', [PayrollController::class, 'bpjsUpdate'])->name('bpjs.update');
+    Route::delete('/bpjs/{id}', [PayrollController::class, 'bpjsDestroy'])->name('bpjs.destroy');
+
     Route::get('/pajak', [PayrollController::class, 'pajak'])->name('pajak');
+    Route::post('/pajak', [PayrollController::class, 'pajakStore'])->name('pajak.store');
+    Route::put('/pajak/{id}', [PayrollController::class, 'pajakUpdate'])->name('pajak.update');
+    Route::delete('/pajak/{id}', [PayrollController::class, 'pajakDestroy'])->name('pajak.destroy');
+
     Route::get('/rekap', [PayrollController::class, 'rekap'])->name('rekap');
+    Route::post('/rekap', [PayrollController::class, 'rekapStore'])->name('rekap.store');
+    Route::put('/rekap/{id}', [PayrollController::class, 'rekapUpdate'])->name('rekap.update');
+    Route::delete('/rekap/{id}', [PayrollController::class, 'rekapDestroy'])->name('rekap.destroy');
 });
 
 // Performance
