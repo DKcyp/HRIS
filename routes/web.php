@@ -104,11 +104,27 @@ Route::prefix('recruitment')->name('recruitment.')->group(function () {
 // Attendance
 Route::prefix('attendance')->name('attendance.')->group(function () {
     Route::get('/', [AttendanceController::class, 'index'])->name('index');
+    Route::post('/', [AttendanceController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [AttendanceController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [AttendanceController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/checkin', [AttendanceController::class, 'checkin'])->name('checkin');
     Route::post('/checkin', [AttendanceController::class, 'storeCheckin'])->name('checkin.store');
+
     Route::get('/overtime', [AttendanceController::class, 'overtime'])->name('overtime');
+    Route::post('/overtime', [AttendanceController::class, 'overtimeStore'])->name('overtime.store');
+    Route::put('/overtime/{id}', [AttendanceController::class, 'overtimeUpdate'])->name('overtime.update');
+    Route::delete('/overtime/{id}', [AttendanceController::class, 'overtimeDestroy'])->name('overtime.destroy');
+
     Route::get('/terlambat', [AttendanceController::class, 'terlambat'])->name('terlambat');
+    Route::post('/terlambat', [AttendanceController::class, 'terlambatStore'])->name('terlambat.store');
+    Route::put('/terlambat/{id}', [AttendanceController::class, 'terlambatUpdate'])->name('terlambat.update');
+    Route::delete('/terlambat/{id}', [AttendanceController::class, 'terlambatDestroy'])->name('terlambat.destroy');
+
     Route::get('/riwayat', [AttendanceController::class, 'riwayat'])->name('riwayat');
+    Route::post('/riwayat', [AttendanceController::class, 'riwayatStore'])->name('riwayat.store');
+    Route::put('/riwayat/{id}', [AttendanceController::class, 'riwayatUpdate'])->name('riwayat.update');
+    Route::delete('/riwayat/{id}', [AttendanceController::class, 'riwayatDestroy'])->name('riwayat.destroy');
 });
 
 // Leave Management
