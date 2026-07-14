@@ -183,6 +183,42 @@
             font-weight: bold;
         }
         
+        /* Notification Dropdown */
+        .notification-dropdown {
+            border: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            border-radius: 0.5rem;
+        }
+        
+        .notification-item {
+            padding: 0.75rem 1rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .notification-item:hover {
+            background-color: #f8f9fc;
+            border-left-color: var(--primary-color);
+        }
+        
+        .notification-item.unread {
+            background-color: #f0f4ff;
+        }
+        
+        .notification-item.unread:hover {
+            background-color: #e6ecff;
+        }
+        
+        .notification-item p {
+            font-size: 0.875rem;
+            color: #5a5c69;
+            line-height: 1.4;
+        }
+        
+        .notification-icon {
+            font-size: 0.875rem;
+        }
+        
         /* Content Area */
         .content-area {
             padding: 2rem;
@@ -738,6 +774,81 @@
             </div>
             
             <div class="user-info">
+                <div class="dropdown">
+                    <button class="btn btn-link text-decoration-none position-relative" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell fa-lg text-muted"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            5
+                            <span class="visually-hidden">unread notifications</span>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end notification-dropdown" style="width: 360px; max-height: 400px; overflow-y: auto;">
+                        <h6 class="dropdown-header d-flex justify-content-between align-items-center">
+                            <span>Notifikasi</span>
+                            <small class="text-primary" style="cursor: pointer;">Tandai semua sudah dibaca</small>
+                        </h6>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item notification-item unread">
+                            <div class="d-flex align-items-start">
+                                <div class="notification-icon bg-primary text-white rounded-circle me-3" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-1">Pengajuan cuti dari <strong>Budi Santoso</strong> menunggu persetujuan</p>
+                                    <small class="text-muted"><i class="fas fa-clock me-1"></i>5 menit yang lalu</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="dropdown-item notification-item unread">
+                            <div class="d-flex align-items-start">
+                                <div class="notification-icon bg-success text-white rounded-circle me-3" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-1">Gaji bulan <strong>Maret 2024</strong> berhasil di-generate</p>
+                                    <small class="text-muted"><i class="fas fa-clock me-1"></i>1 jam yang lalu</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="dropdown-item notification-item unread">
+                            <div class="d-flex align-items-start">
+                                <div class="notification-icon bg-warning text-white rounded-circle me-3" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-1">Kontrak kerja <strong>Siti Rahayu</strong> akan berakhir dalam 30 hari</p>
+                                    <small class="text-muted"><i class="fas fa-clock me-1"></i>2 jam yang lalu</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="dropdown-item notification-item">
+                            <div class="d-flex align-items-start">
+                                <div class="notification-icon bg-info text-white rounded-circle me-3" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-1">Training <strong>Digital Marketing</strong> akan dimulai besok</p>
+                                    <small class="text-muted"><i class="fas fa-clock me-1"></i>3 jam yang lalu</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="dropdown-item notification-item">
+                            <div class="d-flex align-items-start">
+                                <div class="notification-icon bg-secondary text-white rounded-circle me-3" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fas fa-bullhorn"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="mb-1">Pengumuman baru: <strong>Pembaruan Sistem HRIS V2</strong></p>
+                                    <small class="text-muted"><i class="fas fa-clock me-1"></i>1 hari yang lalu</small>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-center text-primary">
+                            <i class="fas fa-bell me-1"></i>Lihat Semua Notifikasi
+                        </a>
+                    </div>
+                </div>
                 <span class="text-muted">Admin User</span>
                 <div class="user-avatar">
                     A
