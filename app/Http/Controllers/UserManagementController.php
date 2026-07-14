@@ -26,63 +26,107 @@ class UserManagementController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:255|unique:global.user_auth,username',
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:global.user_auth,email',
-            'password' => 'required|string|min:6',
-            'role' => 'required|string',
-            'status' => 'required|in:aktif,non-aktif',
-        ]);
+        try {
+            $validated = $request->validate([
+                'username' => 'required|string|max:255|unique:user_auth,username',
+                'nama' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:user_auth,email',
+                'password' => 'required|string|min:6',
+                'role' => 'required|string',
+                'status' => 'required|in:aktif,non-aktif',
+            ]);
 
-        UserAuth::create([
-            'username' => $request->username,
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'password' => $request->password,
-            'role' => $request->role,
-            'status' => $request->status,
-        ]);
+            $user = UserAuth::create([
+                'username' => $validated['username'],
+                'nama' => $validated['nama'],
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+                'role' => $validated['role'],
+                'status' => $validated['status'],
+            ]);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan');
+            return response()->json([
+                'success' => true,
+                'message' => 'User berhasil ditambahkan',
+                'data' => $user,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $user = UserAuth::findOrFail($id);
+        try {
+            $user = UserAuth::findOrFail($id);
 
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'password' => 'nullable|string|min:6',
-            'role' => 'required|string',
-            'status' => 'required|in:aktif,non-aktif',
-        ]);
+            $validated = $request->validate([
+                'username' => 'required|string|max:255',
+                'nama' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'password' => 'nullable|string|min:6',
+                'role' => 'required|string',
+                'status' => 'required|in:aktif,non-aktif',
+            ]);
 
-        $data = [
-            'username' => $request->username,
-            'nama' => $request->nama,
-            'email' => $request->email,
-            'role' => $request->role,
-            'status' => $request->status,
-        ];
+            $data = [
+                'username' => $validated['username'],
+                'nama' => $validated['nama'],
+                'email' => $validated['email'],
+                'role' => $validated['role'],
+                'status' => $validated['status'],
+            ];
 
-        if ($request->filled('password')) {
-            $data['password'] = $request->password;
+            if (!empty($validated['password'])) {
+                $data['password'] = $validated['password'];
+            }
+
+            $user->update($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User berhasil diupdate',
+                'data' => $user,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
         }
-
-        $user->update($data);
-
-        return redirect()->route('users.index')->with('success', 'User berhasil diupdate');
     }
 
     public function destroy($id)
     {
-        $user = UserAuth::findOrFail($id);
-        $user->delete();
+        try {
+            $user = UserAuth::findOrFail($id);
+            $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
+            return response()->json([
+                'success' => true,
+                'message' => 'User berhasil dihapus',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function roles()
