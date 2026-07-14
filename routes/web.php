@@ -350,12 +350,26 @@ Route::prefix('dokumen')->name('dokumen.')->group(function () {
 
 // Resign
 Route::prefix('resign')->name('resign.')->group(function () {
+    Route::get('/', [ResignController::class, 'index'])->name('index');
+    Route::post('/', [ResignController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [ResignController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [ResignController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/exit-interview', [ResignController::class, 'exitInterview'])->name('exit-interview');
+    Route::post('/exit-interview', [ResignController::class, 'exitInterviewStore'])->name('exit-interview.store');
+    Route::put('/exit-interview/{id}', [ResignController::class, 'exitInterviewUpdate'])->name('exit-interview.update');
+    Route::delete('/exit-interview/{id}', [ResignController::class, 'exitInterviewDestroy'])->name('exit-interview.destroy');
+
     Route::get('/clearance', [ResignController::class, 'clearance'])->name('clearance');
+    Route::post('/clearance', [ResignController::class, 'clearanceStore'])->name('clearance.store');
+    Route::put('/clearance/{id}', [ResignController::class, 'clearanceUpdate'])->name('clearance.update');
+    Route::delete('/clearance/{id}', [ResignController::class, 'clearanceDestroy'])->name('clearance.destroy');
+
     Route::get('/pengembalian-asset', [ResignController::class, 'pengembalianAsset'])->name('pengembalian-asset');
+    Route::post('/pengembalian-asset', [ResignController::class, 'pengembalianAssetStore'])->name('pengembalian-asset.store');
+    Route::put('/pengembalian-asset/{id}', [ResignController::class, 'pengembalianAssetUpdate'])->name('pengembalian-asset.update');
+    Route::delete('/pengembalian-asset/{id}', [ResignController::class, 'pengembalianAssetDestroy'])->name('pengembalian-asset.destroy');
 });
-Route::resource('resign', ResignController::class);
-Route::pattern('resign', '[0-9]+');
 
 // Laporan
 Route::prefix('laporan')->name('laporan.')->group(function () {
