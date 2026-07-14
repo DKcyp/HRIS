@@ -294,12 +294,26 @@ Route::prefix('asset')->name('asset.')->group(function () {
 
 // Pengumuman
 Route::prefix('pengumuman')->name('pengumuman.')->group(function () {
+    Route::get('/', [PengumumanController::class, 'index'])->name('index');
+    Route::post('/', [PengumumanController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [PengumumanController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [PengumumanController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/event', [PengumumanController::class, 'event'])->name('event');
+    Route::post('/event', [PengumumanController::class, 'eventStore'])->name('event.store');
+    Route::put('/event/{id}', [PengumumanController::class, 'eventUpdate'])->name('event.update');
+    Route::delete('/event/{id}', [PengumumanController::class, 'eventDestroy'])->name('event.destroy');
+
     Route::get('/birthday', [PengumumanController::class, 'birthday'])->name('birthday');
+    Route::post('/birthday', [PengumumanController::class, 'birthdayStore'])->name('birthday.store');
+    Route::put('/birthday/{id}', [PengumumanController::class, 'birthdayUpdate'])->name('birthday.update');
+    Route::delete('/birthday/{id}', [PengumumanController::class, 'birthdayDestroy'])->name('birthday.destroy');
+
     Route::get('/libur-nasional', [PengumumanController::class, 'liburNasional'])->name('libur-nasional');
+    Route::post('/libur-nasional', [PengumumanController::class, 'liburNasionalStore'])->name('libur-nasional.store');
+    Route::put('/libur-nasional/{id}', [PengumumanController::class, 'liburNasionalUpdate'])->name('libur-nasional.update');
+    Route::delete('/libur-nasional/{id}', [PengumumanController::class, 'liburNasionalDestroy'])->name('libur-nasional.destroy');
 });
-Route::resource('pengumuman', PengumumanController::class);
-Route::pattern('pengumuman', '[0-9]+');
 
 // Dokumen
 Route::prefix('dokumen')->name('dokumen.')->group(function () {
