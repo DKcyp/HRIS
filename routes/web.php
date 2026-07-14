@@ -71,11 +71,34 @@ Route::prefix('organisasi')->name('organisasi.')->group(function () {
 // Recruitment
 Route::prefix('recruitment')->name('recruitment.')->group(function () {
     Route::get('/', [RecruitmentController::class, 'index'])->name('index');
+    Route::post('/', [RecruitmentController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [RecruitmentController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [RecruitmentController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/applicant', [RecruitmentController::class, 'applicant'])->name('applicant');
+    Route::post('/applicant', [RecruitmentController::class, 'applicantStore'])->name('applicant.store');
+    Route::put('/applicant/{id}', [RecruitmentController::class, 'applicantUpdate'])->name('applicant.update');
+    Route::delete('/applicant/{id}', [RecruitmentController::class, 'applicantDestroy'])->name('applicant.destroy');
+
     Route::get('/interview', [RecruitmentController::class, 'interview'])->name('interview');
+    Route::post('/interview', [RecruitmentController::class, 'interviewStore'])->name('interview.store');
+    Route::put('/interview/{id}', [RecruitmentController::class, 'interviewUpdate'])->name('interview.update');
+    Route::delete('/interview/{id}', [RecruitmentController::class, 'interviewDestroy'])->name('interview.destroy');
+
     Route::get('/offering', [RecruitmentController::class, 'offering'])->name('offering');
+    Route::post('/offering', [RecruitmentController::class, 'offeringStore'])->name('offering.store');
+    Route::put('/offering/{id}', [RecruitmentController::class, 'offeringUpdate'])->name('offering.update');
+    Route::delete('/offering/{id}', [RecruitmentController::class, 'offeringDestroy'])->name('offering.destroy');
+
     Route::get('/psikotes', [RecruitmentController::class, 'psikotes'])->name('psikotes');
+    Route::post('/psikotes', [RecruitmentController::class, 'psikotesStore'])->name('psikotes.store');
+    Route::put('/psikotes/{id}', [RecruitmentController::class, 'psikotesUpdate'])->name('psikotes.update');
+    Route::delete('/psikotes/{id}', [RecruitmentController::class, 'psikotesDestroy'])->name('psikotes.destroy');
+
     Route::get('/hiring', [RecruitmentController::class, 'hiring'])->name('hiring');
+    Route::post('/hiring', [RecruitmentController::class, 'hiringStore'])->name('hiring.store');
+    Route::put('/hiring/{id}', [RecruitmentController::class, 'hiringUpdate'])->name('hiring.update');
+    Route::delete('/hiring/{id}', [RecruitmentController::class, 'hiringDestroy'])->name('hiring.destroy');
 });
 
 // Attendance
