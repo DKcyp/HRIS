@@ -253,12 +253,26 @@ Route::prefix('performance')->name('performance.')->group(function () {
 
 // Training
 Route::prefix('training')->name('training.')->group(function () {
+    Route::get('/', [TrainingController::class, 'index'])->name('index');
+    Route::post('/', [TrainingController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [TrainingController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [TrainingController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/peserta', [TrainingController::class, 'peserta'])->name('peserta');
+    Route::post('/peserta', [TrainingController::class, 'pesertaStore'])->name('peserta.store');
+    Route::put('/peserta/{id}', [TrainingController::class, 'pesertaUpdate'])->name('peserta.update');
+    Route::delete('/peserta/{id}', [TrainingController::class, 'pesertaDestroy'])->name('peserta.destroy');
+
     Route::get('/sertifikat', [TrainingController::class, 'sertifikat'])->name('sertifikat');
+    Route::post('/sertifikat', [TrainingController::class, 'sertifikatStore'])->name('sertifikat.store');
+    Route::put('/sertifikat/{id}', [TrainingController::class, 'sertifikatUpdate'])->name('sertifikat.update');
+    Route::delete('/sertifikat/{id}', [TrainingController::class, 'sertifikatDestroy'])->name('sertifikat.destroy');
+
     Route::get('/nilai', [TrainingController::class, 'nilai'])->name('nilai');
+    Route::post('/nilai', [TrainingController::class, 'nilaiStore'])->name('nilai.store');
+    Route::put('/nilai/{id}', [TrainingController::class, 'nilaiUpdate'])->name('nilai.update');
+    Route::delete('/nilai/{id}', [TrainingController::class, 'nilaiDestroy'])->name('nilai.destroy');
 });
-Route::resource('training', TrainingController::class);
-Route::pattern('training', '[0-9]+');
 
 // Asset Management
 Route::prefix('asset')->name('asset.')->group(function () {
