@@ -317,14 +317,36 @@ Route::prefix('pengumuman')->name('pengumuman.')->group(function () {
 
 // Dokumen
 Route::prefix('dokumen')->name('dokumen.')->group(function () {
+    Route::get('/', [DokumenController::class, 'index'])->name('index');
+    Route::post('/', [DokumenController::class, 'indexStore'])->name('index.store');
+    Route::put('/{id}', [DokumenController::class, 'indexUpdate'])->name('index.update');
+    Route::delete('/{id}', [DokumenController::class, 'indexDestroy'])->name('index.destroy');
+
     Route::get('/sop', [DokumenController::class, 'sop'])->name('sop');
+    Route::post('/sop', [DokumenController::class, 'sopStore'])->name('sop.store');
+    Route::put('/sop/{id}', [DokumenController::class, 'sopUpdate'])->name('sop.update');
+    Route::delete('/sop/{id}', [DokumenController::class, 'sopDestroy'])->name('sop.destroy');
+
     Route::get('/kontrak', [DokumenController::class, 'kontrak'])->name('kontrak');
+    Route::post('/kontrak', [DokumenController::class, 'kontrakStore'])->name('kontrak.store');
+    Route::put('/kontrak/{id}', [DokumenController::class, 'kontrakUpdate'])->name('kontrak.update');
+    Route::delete('/kontrak/{id}', [DokumenController::class, 'kontrakDestroy'])->name('kontrak.destroy');
+
     Route::get('/pkwt', [DokumenController::class, 'pkwt'])->name('pkwt');
+    Route::post('/pkwt', [DokumenController::class, 'pkwtStore'])->name('pkwt.store');
+    Route::put('/pkwt/{id}', [DokumenController::class, 'pkwtUpdate'])->name('pkwt.update');
+    Route::delete('/pkwt/{id}', [DokumenController::class, 'pkwtDestroy'])->name('pkwt.destroy');
+
     Route::get('/nda', [DokumenController::class, 'nda'])->name('nda');
+    Route::post('/nda', [DokumenController::class, 'ndaStore'])->name('nda.store');
+    Route::put('/nda/{id}', [DokumenController::class, 'ndaUpdate'])->name('nda.update');
+    Route::delete('/nda/{id}', [DokumenController::class, 'ndaDestroy'])->name('nda.destroy');
+
     Route::get('/surat-peringatan', [DokumenController::class, 'suratPeringatan'])->name('surat-peringatan');
+    Route::post('/surat-peringatan', [DokumenController::class, 'suratPeringatanStore'])->name('surat-peringatan.store');
+    Route::put('/surat-peringatan/{id}', [DokumenController::class, 'suratPeringatanUpdate'])->name('surat-peringatan.update');
+    Route::delete('/surat-peringatan/{id}', [DokumenController::class, 'suratPeringatanDestroy'])->name('surat-peringatan.destroy');
 });
-Route::resource('dokumen', DokumenController::class);
-Route::pattern('dokumen', '[0-9]+');
 
 // Resign
 Route::prefix('resign')->name('resign.')->group(function () {
