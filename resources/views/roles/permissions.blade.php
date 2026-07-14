@@ -22,7 +22,9 @@
                         <td class="text-center">@if($p->update)<i class="fas fa-check-circle text-success"></i>@else<i class="fas fa-times-circle text-danger"></i>@endif</td>
                         <td class="text-center">@if($p->delete)<i class="fas fa-check-circle text-success"></i>@else<i class="fas fa-times-circle text-danger"></i>@endif</td>
                     </tr>
-                    @empty<tr><td colspan="6" class="text-center py-5 text-muted"><i class="fas fa-key fa-3x mb-3 d-block"></i><p>Belum ada data permission</p></td></tr>@endforelse
+                    @empty
+                    <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fas fa-key fa-3x mb-3 d-block"></i><p>Belum ada data permission</p></td></tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

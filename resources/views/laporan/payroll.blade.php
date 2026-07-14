@@ -27,7 +27,9 @@
                         <td class="text-end"><span class="text-danger">-Rp {{ number_format($p->pajak,0,',','.') }}</span></td>
                         <td class="text-end"><strong>Rp {{ number_format($p->total,0,',','.') }}</strong></td>
                     </tr>
-                    @empty<tr><td colspan="11" class="text-center py-5 text-muted"><i class="fas fa-money-bill-wave fa-3x mb-3 d-block"></i><p>Belum ada data payroll</p></td></tr>@endforelse
+                    @empty
+                    <tr><td colspan="11" class="text-center py-5 text-muted"><i class="fas fa-money-bill-wave fa-3x mb-3 d-block"></i><p>Belum ada data payroll</p></td></tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

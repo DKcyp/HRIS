@@ -24,7 +24,9 @@
                         <td class="text-center">@if($u->status=='aktif')<span class="badge bg-success">Aktif</span>@else<span class="badge bg-danger">Non-aktif</span>@endif</td>
                         <td>{{ $u->last_login }}</td>
                     </tr>
-                    @empty<tr><td colspan="7" class="text-center py-5 text-muted"><i class="fas fa-users-cog fa-3x mb-3 d-block"></i><p>Belum ada data user</p></td></tr>@endforelse
+                    @empty
+                    <tr><td colspan="7" class="text-center py-5 text-muted"><i class="fas fa-users-cog fa-3x mb-3 d-block"></i><p>Belum ada data user</p></td></tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

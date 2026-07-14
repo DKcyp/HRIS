@@ -55,7 +55,9 @@
                             <div class="modal-footer justify-content-center"><button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-danger px-3"><i class="fas fa-trash me-1"></i>Hapus</button></div>
                         </form>
                     </div></div></div>
-                    @empty<tr><td colspan="9" class="text-center py-5 text-muted"><i class="fas fa-comment-dots fa-3x mb-3 d-block"></i><p>Belum ada data feedback</p></td></tr>@endforelse
+                    @empty
+                    <tr><td colspan="9" class="text-center py-5 text-muted"><i class="fas fa-comment-dots fa-3x mb-3 d-block"></i><p>Belum ada data feedback</p></td></tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

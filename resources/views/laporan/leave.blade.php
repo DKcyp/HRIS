@@ -26,7 +26,9 @@
                         <td class="text-center"><span class="badge bg-secondary">{{ $l->izin }}</span></td>
                         <td class="text-center"><span class="badge bg-primary">{{ $l->total }}</span></td>
                     </tr>
-                    @empty<tr><td colspan="10" class="text-center py-5 text-muted"><i class="fas fa-umbrella-beach fa-3x mb-3 d-block"></i><p>Belum ada data cuti</p></td></tr>@endforelse
+                    @empty
+                    <tr><td colspan="10" class="text-center py-5 text-muted"><i class="fas fa-umbrella-beach fa-3x mb-3 d-block"></i><p>Belum ada data cuti</p></td></tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
