@@ -15,13 +15,12 @@
         </button>
     </div>
     <div class="card-body">
-        <!-- Filter -->
         <div class="row mb-4">
             <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="Cari nama/NIK...">
+                <input type="text" class="form-control" id="searchInput" placeholder="Cari nama/NIK..." oninput="filterTable()">
             </div>
             <div class="col-md-2">
-                <select class="form-select">
+                <select class="form-select" id="filterDivisi" onchange="filterTable()">
                     <option value="">Semua Divisi</option>
                     <option>IT</option>
                     <option>HRD</option>
@@ -30,19 +29,18 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-select">
+                <select class="form-select" id="filterStatus" onchange="filterTable()">
                     <option value="">Semua Status</option>
-                    <option>Aktif</option>
-                    <option>Kontrak</option>
-                    <option>Resign</option>
+                    <option value="aktif">Aktif</option>
+                    <option value="kontrak">Kontrak</option>
+                    <option value="resign">Resign</option>
                 </select>
             </div>
             <div class="col-md-2">
-                <button class="btn btn-secondary w-100"><i class="fas fa-search me-1"></i> Cari</button>
+                <button class="btn btn-secondary w-100" onclick="filterTable()"><i class="fas fa-search me-1"></i> Cari</button>
             </div>
         </div>
-        
-        <!-- Table -->
+
         <div class="table-responsive">
             <table class="table table-hover align-middle" id="employeeTable">
                 <thead class="table-light">
@@ -57,9 +55,9 @@
                         <th class="text-center" width="120">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="employeeTableBody">
                     @forelse($employees as $emp)
-                    <tr>
+                    <tr data-nik="{{ $emp->nik }}" data-nama="{{ $emp->nama }}" data-divisi="{{ $emp->divisi }}" data-status="{{ $emp->status }}">
                         <td><code>{{ $emp->nik }}</code></td>
                         <td>
                             <div class="d-flex align-items-center">
@@ -84,17 +82,9 @@
                         </td>
                         <td class="text-center">
                             <div class="btn-group btn-group-sm">
-                                <button type="button" class="btn btn-outline-info" title="Detail"
-                                    onclick="showDetail('{{ $emp->nik }}','{{ $emp->nama }}','{{ $emp->divisi }}','{{ $emp->jabatan }}','{{ $emp->email }}','{{ $emp->telepon }}','{{ $emp->status }}','{{ $emp->tanggal_masuk }}')">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-warning" title="Edit"
-                                    onclick="showEdit('{{ $emp->id }}','{{ $emp->nik }}','{{ $emp->nama }}','{{ $emp->divisi }}','{{ $emp->jabatan }}','{{ $emp->email }}','{{ $emp->telepon }}','{{ $emp->status }}')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-outline-danger" title="Hapus" onclick="confirmDelete('{{ $emp->nama }}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <button type="button" class="btn btn-outline-info" title="Detail" onclick="showDetail({{ $emp->id }})"><i class="fas fa-eye"></i></button>
+                                <button type="button" class="btn btn-outline-warning" title="Edit" onclick="showEdit({{ $emp->id }})"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-outline-danger" title="Hapus" onclick="confirmDelete({{ $emp->id }},'{{ addslashes($emp->nama) }}')"><i class="fas fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -112,22 +102,14 @@
                 </tbody>
             </table>
         </div>
-        
-        <!-- Pagination -->
+
         <div class="d-flex justify-content-between align-items-center mt-4">
-            <div class="text-muted">Menampilkan 1 - {{ count($employees) }} dari {{ count($employees) }} data</div>
-            <nav>
-                <ul class="pagination mb-0">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+            <div class="text-muted" id="tableInfo">Menampilkan {{ count($employees) }} dari {{ count($employees) }} data</div>
         </div>
     </div>
 </div>
 
-<!-- Modal Detail Karyawan -->
+<!-- Modal Detail -->
 <div class="modal fade" id="detailModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -144,30 +126,12 @@
                     </div>
                     <div class="col-md-8">
                         <table class="table table-borderless mb-0">
-                            <tr>
-                                <td class="text-muted" width="140">Divisi</td>
-                                <td>: <strong id="detailDivisi"></strong></td>
-                            </tr>
-                            <tr>
-                                <td class="text-muted">Jabatan</td>
-                                <td>: <strong id="detailJabatan"></strong></td>
-                            </tr>
-                            <tr>
-                                <td class="text-muted">Email</td>
-                                <td>: <span id="detailEmail"></span></td>
-                            </tr>
-                            <tr>
-                                <td class="text-muted">Telepon</td>
-                                <td>: <span id="detailTelepon"></span></td>
-                            </tr>
-                            <tr>
-                                <td class="text-muted">Status</td>
-                                <td>: <span id="detailStatus"></span></td>
-                            </tr>
-                            <tr>
-                                <td class="text-muted">Tanggal Masuk</td>
-                                <td>: <span id="detailMasuk"></span></td>
-                            </tr>
+                            <tr><td class="text-muted" width="140">Divisi</td><td>: <strong id="detailDivisi"></strong></td></tr>
+                            <tr><td class="text-muted">Jabatan</td><td>: <strong id="detailJabatan"></strong></td></tr>
+                            <tr><td class="text-muted">Email</td><td>: <span id="detailEmail"></span></td></tr>
+                            <tr><td class="text-muted">Telepon</td><td>: <span id="detailTelepon"></span></td></tr>
+                            <tr><td class="text-muted">Status</td><td>: <span id="detailStatus"></span></td></tr>
+                            <tr><td class="text-muted">Tanggal Masuk</td><td>: <span id="detailMasuk"></span></td></tr>
                         </table>
                     </div>
                 </div>
@@ -179,7 +143,7 @@
     </div>
 </div>
 
-<!-- Modal Edit Karyawan -->
+<!-- Modal Edit -->
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -187,56 +151,7 @@
                 <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Edit Karyawan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form id="editForm" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="modal-body">
-                    <input type="hidden" id="editId" name="id">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">NIK</label>
-                            <input type="text" class="form-control" id="editNik" name="nik" readonly style="background:#f0f0f0;">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="editNama" name="nama" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Divisi <span class="text-danger">*</span></label>
-                            <select class="form-select" id="editDivisi" name="divisi" required>
-                                <option value="IT">IT</option>
-                                <option value="HRD">HRD</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Marketing">Marketing</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Jabatan <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="editJabatan" name="jabatan" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Email <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="editEmail" name="email" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Telepon <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="editTelepon" name="telepon" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Status <span class="text-danger">*</span></label>
-                            <select class="form-select" id="editStatus" name="status" required>
-                                <option value="aktif">Aktif</option>
-                                <option value="kontrak">Kontrak</option>
-                                <option value="resign">Resign</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Simpan Perubahan</button>
-                </div>
-            </form>
+            <div class="modal-body" id="editFormBody"></div>
         </div>
     </div>
 </div>
@@ -254,61 +169,141 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-danger btn-sm" onclick="deleteEmployee()"><i class="fas fa-trash me-1"></i> Hapus</button>
+                <button type="button" class="btn btn-danger btn-sm" id="btnDeleteConfirm"><i class="fas fa-trash me-1"></i> Hapus</button>
             </div>
         </div>
     </div>
 </div>
 
-@endsection
-
-@push('scripts')
 <script>
-    function showDetail(nik, nama, divisi, jabatan, email, telepon, status, tanggalMasuk) {
-        document.getElementById('detailAvatar').textContent = nama.charAt(0);
-        document.getElementById('detailNama').textContent = nama;
-        document.getElementById('detailNik').textContent = nik;
-        document.getElementById('detailDivisi').textContent = divisi;
-        document.getElementById('detailJabatan').textContent = jabatan;
-        document.getElementById('detailEmail').textContent = email;
-        document.getElementById('detailTelepon').textContent = telepon;
-        document.getElementById('detailMasuk').textContent = tanggalMasuk;
-        
-        var statusEl = document.getElementById('detailStatus');
-        if (status === 'aktif') {
-            statusEl.innerHTML = '<span class="badge bg-success">Aktif</span>';
-        } else if (status === 'kontrak') {
-            statusEl.innerHTML = '<span class="badge bg-warning text-dark">Kontrak</span>';
-        } else {
-            statusEl.innerHTML = '<span class="badge bg-danger">Resign</span>';
-        }
-        
-        new bootstrap.Modal(document.getElementById('detailModal')).show();
+    let deleteId = null;
+
+    function filterTable() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const divisi = document.getElementById('filterDivisi').value;
+        const status = document.getElementById('filterStatus').value;
+        const rows = document.querySelectorAll('#employeeTableBody tr[data-nik]');
+        let visible = 0;
+        rows.forEach(row => {
+            const nama = row.dataset.nama.toLowerCase();
+            const nik = row.dataset.nik.toLowerCase();
+            const d = row.dataset.divisi;
+            const s = row.dataset.status;
+            const matchSearch = !search || nama.includes(search) || nik.includes(search);
+            const matchDivisi = !divisi || d === divisi;
+            const matchStatus = !status || s === status;
+            const show = matchSearch && matchDivisi && matchStatus;
+            row.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+        document.getElementById('tableInfo').textContent = `Menampilkan ${visible} dari ${rows.length} data`;
     }
-    
-    function showEdit(id, nik, nama, divisi, jabatan, email, telepon, status) {
-        document.getElementById('editId').value = id;
-        document.getElementById('editNik').value = nik;
-        document.getElementById('editNama').value = nama;
-        document.getElementById('editDivisi').value = divisi;
-        document.getElementById('editJabatan').value = jabatan;
-        document.getElementById('editEmail').value = email;
-        document.getElementById('editTelepon').value = telepon;
-        document.getElementById('editStatus').value = status;
-        document.getElementById('editForm').action = '/employee/' + id;
-        
-        new bootstrap.Modal(document.getElementById('editModal')).show();
+
+    async function showDetail(id) {
+        try {
+            const res = await fetch('/employee/' + id, { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } });
+            const data = await res.json();
+            if (!data.success) return;
+            const e = data.data;
+            document.getElementById('detailAvatar').textContent = e.nama ? e.nama.charAt(0) : '?';
+            document.getElementById('detailNama').textContent = e.nama;
+            document.getElementById('detailNik').textContent = e.nik;
+            document.getElementById('detailDivisi').textContent = e.divisi;
+            document.getElementById('detailJabatan').textContent = e.jabatan;
+            document.getElementById('detailEmail').textContent = e.email;
+            document.getElementById('detailTelepon').textContent = e.telepon;
+            document.getElementById('detailMasuk').textContent = e.tanggal_masuk;
+            let badge = '';
+            if (e.status === 'aktif') badge = '<span class="badge bg-success">Aktif</span>';
+            else if (e.status === 'kontrak') badge = '<span class="badge bg-warning text-dark">Kontrak</span>';
+            else badge = '<span class="badge bg-danger">Resign</span>';
+            document.getElementById('detailStatus').innerHTML = badge;
+            new bootstrap.Modal(document.getElementById('detailModal')).show();
+        } catch(ex) { console.error(ex); }
     }
-    
-    function confirmDelete(nama) {
+
+    async function showEdit(id) {
+        try {
+            const res = await fetch('/employee/' + id, { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } });
+            const data = await res.json();
+            if (!data.success) return;
+            const e = data.data;
+            document.getElementById('editFormBody').innerHTML = `
+                <form id="editForm">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="_method" value="PUT">
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label class="form-label">NIK <span class="text-danger">*</span></label><input type="text" class="form-control" name="nik" value="${e.nik}" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Nama Lengkap <span class="text-danger">*</span></label><input type="text" class="form-control" name="nama" value="${e.nama}" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Tempat Lahir</label><input type="text" class="form-control" name="tempat_lahir" value="${e.tempat_lahir || ''}"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Tanggal Lahir</label><input type="date" class="form-control" name="tanggal_lahir" value="${e.tanggal_lahir || ''}"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label><select class="form-select" name="jenis_kelamin" required><option value="L" ${e.jenis_kelamin==='L'?'selected':''}>Laki-laki</option><option value="P" ${e.jenis_kelamin==='P'?'selected':''}>Perempuan</option></select></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Email <span class="text-danger">*</span></label><input type="email" class="form-control" name="email" value="${e.email}" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Telepon <span class="text-danger">*</span></label><input type="text" class="form-control" name="telepon" value="${e.telepon}" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Divisi <span class="text-danger">*</span></label><select class="form-select" name="divisi" required><option value="IT" ${e.divisi==='IT'?'selected':''}>IT</option><option value="HRD" ${e.divisi==='HRD'?'selected':''}>HRD</option><option value="Finance" ${e.divisi==='Finance'?'selected':''}>Finance</option><option value="Marketing" ${e.divisi==='Marketing'?'selected':''}>Marketing</option></select></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Departemen <span class="text-danger">*</span></label><input type="text" class="form-control" name="departemen" value="${e.departemen}" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Jabatan <span class="text-danger">*</span></label><input type="text" class="form-control" name="jabatan" value="${e.jabatan}" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Grade</label><input type="text" class="form-control" name="grade" value="${e.grade || ''}"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Lokasi Kerja</label><input type="text" class="form-control" name="lokasi_kerja" value="${e.lokasi_kerja || ''}"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Status Kepegawaian <span class="text-danger">*</span></label><input type="text" class="form-control" name="status_kepegawaian" value="${e.status_kepegawaian}" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Tanggal Masuk <span class="text-danger">*</span></label><input type="date" class="form-control" name="tanggal_masuk" value="${e.tanggal_masuk}" required></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Tanggal Kontrak Habis</label><input type="date" class="form-control" name="tanggal_kontrak_habis" value="${e.tanggal_kontrak_habis || ''}"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">No. KTP</label><input type="text" class="form-control" name="no_ktp" value="${e.no_ktp || ''}"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">No. NPWP</label><input type="text" class="form-control" name="no_npwp" value="${e.no_npwp || ''}"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">No. KK</label><input type="text" class="form-control" name="no_kk" value="${e.no_kk || ''}"></div>
+                        <div class="col-md-6 mb-3"><label class="form-label">Status <span class="text-danger">*</span></label><select class="form-select" name="status" required><option value="aktif" ${e.status==='aktif'?'selected':''}>Aktif</option><option value="kontrak" ${e.status==='kontrak'?'selected':''}>Kontrak</option><option value="resign" ${e.status==='resign'?'selected':''}>Resign</option></select></div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Simpan Perubahan</button>
+                    </div>
+                </form>
+            `;
+            document.getElementById('editForm').addEventListener('submit', async function(ev) {
+                ev.preventDefault();
+                const formData = new FormData(this);
+                try {
+                    const res = await fetch('/employee/' + id, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    });
+                    const result = await res.json();
+                    if (result.success) {
+                        bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+                        location.reload();
+                    } else {
+                        let errors = '';
+                        if (result.errors) Object.values(result.errors).forEach(arr => { errors += arr.join(', '); });
+                        alert(result.message + (errors ? ': ' + errors : ''));
+                    }
+                } catch(ex) { alert('Error: ' + ex.message); }
+            });
+            new bootstrap.Modal(document.getElementById('editModal')).show();
+        } catch(ex) { console.error(ex); }
+    }
+
+    function confirmDelete(id, nama) {
+        deleteId = id;
         document.getElementById('deleteNama').textContent = nama;
         new bootstrap.Modal(document.getElementById('deleteModal')).show();
     }
-    
-    function deleteEmployee() {
-        // Logic hapus
-        alert('Karyawan berhasil dihapus');
-        bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
-    }
+
+    document.getElementById('btnDeleteConfirm').addEventListener('click', async function() {
+        if (!deleteId) return;
+        try {
+            const res = await fetch('/employee/' + deleteId, {
+                method: 'DELETE',
+                headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const result = await res.json();
+            if (result.success) {
+                bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+                location.reload();
+            } else {
+                alert(result.message || 'Gagal menghapus');
+            }
+        } catch(ex) { alert('Error: ' + ex.message); }
+    });
 </script>
-@endpush
+@endsection

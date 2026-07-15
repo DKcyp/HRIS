@@ -15,10 +15,10 @@
         </a>
     </div>
     <div class="card-body">
-        <form action="{{ route('employee.store') }}" method="POST">
-            @csrf
-            
-            <!-- Data Diri -->
+        <div id="formAlert" class="alert d-none" role="alert"></div>
+        <form id="createForm">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
             <h6 class="text-primary mb-3"><i class="fas fa-user me-2"></i>Data Diri</h6>
             <div class="row mb-4">
                 <div class="col-md-3 mb-3">
@@ -78,7 +78,6 @@
                 </div>
             </div>
 
-            <!-- Kontak -->
             <h6 class="text-primary mb-3"><i class="fas fa-phone me-2"></i>Kontak</h6>
             <div class="row mb-4">
                 <div class="col-md-4 mb-3">
@@ -91,11 +90,10 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">No. BPJS</label>
-                    <input type="text" class="form-control" name="bpjs" placeholder="Nomor BPJS">
+                    <input type="text" class="form-control" name="no_bpjs" placeholder="Nomor BPJS">
                 </div>
             </div>
 
-            <!-- Alamat -->
             <h6 class="text-primary mb-3"><i class="fas fa-map-marker-alt me-2"></i>Alamat</h6>
             <div class="row mb-4">
                 <div class="col-md-6 mb-3">
@@ -116,12 +114,11 @@
                 </div>
             </div>
 
-            <!-- Kepegawaian -->
             <h6 class="text-primary mb-3"><i class="fas fa-briefcase me-2"></i>Kepegawaian</h6>
             <div class="row mb-4">
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Divisi <span class="text-danger">*</span></label>
-                    <select class="form-select" name="divisi_id" required>
+                    <select class="form-select" name="divisi" required>
                         <option value="">Pilih Divisi</option>
                         <option>IT</option>
                         <option>HRD</option>
@@ -132,44 +129,19 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Departemen <span class="text-danger">*</span></label>
-                    <select class="form-select" name="departemen_id" required>
-                        <option value="">Pilih Departemen</option>
-                        <option>Development</option>
-                        <option>HRGA</option>
-                        <option>Accounting</option>
-                        <option>Digital Marketing</option>
-                    </select>
+                    <input type="text" class="form-control" name="departemen" placeholder="Departemen" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Jabatan <span class="text-danger">*</span></label>
-                    <select class="form-select" name="jabatan_id" required>
-                        <option value="">Pilih Jabatan</option>
-                        <option>Staff</option>
-                        <option>Senior Staff</option>
-                        <option>Supervisor</option>
-                        <option>Manager</option>
-                        <option>Director</option>
-                    </select>
+                    <input type="text" class="form-control" name="jabatan" placeholder="Jabatan" required>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Grade</label>
-                    <select class="form-select" name="grade_id">
-                        <option value="">Pilih Grade</option>
-                        <option>Grade 1</option>
-                        <option>Grade 2</option>
-                        <option>Grade 3</option>
-                        <option>Grade 4</option>
-                        <option>Grade 5</option>
-                    </select>
+                    <input type="text" class="form-control" name="grade" placeholder="Grade">
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Lokasi Kerja</label>
-                    <select class="form-select" name="location_id">
-                        <option value="">Pilih Lokasi</option>
-                        <option>Kantor Pusat - Jakarta</option>
-                        <option>Kantor Cabang - Bandung</option>
-                        <option>Remote</option>
-                    </select>
+                    <input type="text" class="form-control" name="lokasi_kerja" placeholder="Lokasi Kerja">
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label">Status Kepegawaian <span class="text-danger">*</span></label>
@@ -191,7 +163,6 @@
                 </div>
             </div>
 
-            <!-- Dokumen -->
             <h6 class="text-primary mb-3"><i class="fas fa-id-card me-2"></i>Dokumen</h6>
             <div class="row mb-4">
                 <div class="col-md-4 mb-3">
@@ -206,13 +177,19 @@
                     <label class="form-label">No. KK</label>
                     <input type="text" class="form-control" name="no_kk" placeholder="Nomor Kartu Keluarga">
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Foto Karyawan</label>
-                    <input type="file" class="form-control" name="foto" accept="image/*">
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label class="form-label">Status <span class="text-danger">*</span></label>
+                    <select class="form-select" name="status" required>
+                        <option value="aktif">Aktif</option>
+                        <option value="kontrak">Kontrak</option>
+                        <option value="resign">Resign</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Submit -->
             <div class="d-flex justify-content-end gap-2">
                 <a href="{{ route('employee.index') }}" class="btn btn-outline-secondary px-4" onclick="navigateTo(event, '{{ route('employee.index') }}')">
                     <i class="fas fa-times me-1"></i> Batal
@@ -227,4 +204,49 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.getElementById('createForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const alertBox = document.getElementById('formAlert');
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...';
+        alertBox.classList.add('d-none');
+
+        try {
+            const formData = new FormData(form);
+            const res = await fetch('{{ route("employee.store") }}', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const result = await res.json();
+            if (result.success) {
+                alertBox.className = 'alert alert-success';
+                alertBox.innerHTML = '<i class="fas fa-check-circle me-2"></i>' + result.message;
+                alertBox.classList.remove('d-none');
+                form.reset();
+                setTimeout(() => { navigateTo(null, '{{ route("employee.index") }}'); }, 1500);
+            } else {
+                let errors = '';
+                if (result.errors) {
+                    Object.values(result.errors).forEach(arr => { errors += arr.join(', '); });
+                }
+                alertBox.className = 'alert alert-danger';
+                alertBox.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>' + (result.message || 'Gagal menyimpan') + (errors ? ': ' + errors : '');
+                alertBox.classList.remove('d-none');
+            }
+        } catch(ex) {
+            alertBox.className = 'alert alert-danger';
+            alertBox.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Error: ' + ex.message;
+            alertBox.classList.remove('d-none');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan';
+        }
+    });
+</script>
 @endsection

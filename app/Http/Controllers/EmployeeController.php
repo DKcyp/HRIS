@@ -2,22 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
-        $employees = collect([
-            (object)['id'=>1,'nik'=>'EMP-001','nama'=>'Budi Santoso','divisi'=>'IT','jabatan'=>'Staff Developer','email'=>'budi@hris.com','telepon'=>'081234567890','status'=>'aktif','tanggal_masuk'=>'2022-03-15','foto'=>null],
-            (object)['id'=>2,'nik'=>'EMP-002','nama'=>'Siti Rahayu','divisi'=>'HRD','jabatan'=>'HR Manager','email'=>'siti@hris.com','telepon'=>'081234567891','status'=>'aktif','tanggal_masuk'=>'2021-01-10','foto'=>null],
-            (object)['id'=>3,'nik'=>'EMP-003','nama'=>'Andi Wijaya','divisi'=>'Finance','jabatan'=>'Staff Accounting','email'=>'andi@hris.com','telepon'=>'081234567892','status'=>'kontrak','tanggal_masuk'=>'2023-07-01','foto'=>null],
-            (object)['id'=>4,'nik'=>'EMP-004','nama'=>'Dewi Lestari','divisi'=>'Marketing','jabatan'=>'Marketing Manager','email'=>'dewi@hris.com','telepon'=>'081234567893','status'=>'aktif','tanggal_masuk'=>'2020-06-20','foto'=>null],
-            (object)['id'=>5,'nik'=>'EMP-005','nama'=>'Rizky Pratama','divisi'=>'IT','jabatan'=>'Staff Network','email'=>'rizky@hris.com','telepon'=>'081234567894','status'=>'resign','tanggal_masuk'=>'2022-09-01','foto'=>null],
-            (object)['id'=>6,'nik'=>'EMP-006','nama'=>'Putri Amelia','divisi'=>'HRD','jabatan'=>'HR Staff','email'=>'putri@hris.com','telepon'=>'081234567895','status'=>'aktif','tanggal_masuk'=>'2023-02-14','foto'=>null],
-            (object)['id'=>7,'nik'=>'EMP-007','nama'=>'Hendra Kusuma','divisi'=>'Finance','jabatan'=>'Finance Manager','email'=>'hendra@hris.com','telepon'=>'081234567896','status'=>'aktif','tanggal_masuk'=>'2019-11-05','foto'=>null],
-            (object)['id'=>8,'nik'=>'EMP-008','nama'=>'Maya Sari','divisi'=>'Marketing','jabatan'=>'Staff Marketing','email'=>'maya@hris.com','telepon'=>'081234567897','status'=>'kontrak','tanggal_masuk'=>'2023-04-10','foto'=>null],
-        ]);
+        $employees = Employee::orderBy('id')->get();
 
         return view('employee.index', compact('employees'));
     }
@@ -29,30 +21,150 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
-        return redirect()->route('employee.index')->with('success', 'Karyawan berhasil ditambahkan');
+        try {
+            $validated = $request->validate([
+                'nik' => 'required|string|max:255|unique:global.pegawai,nik',
+                'nama' => 'required|string|max:255',
+                'tempat_lahir' => 'nullable|string|max:255',
+                'tanggal_lahir' => 'nullable|date',
+                'jenis_kelamin' => 'required|in:L,P',
+                'agama' => 'nullable|string|max:255',
+                'status_nikah' => 'nullable|string|max:255',
+                'golongan_darah' => 'nullable|string|max:5',
+                'email' => 'required|email|max:255|unique:global.pegawai,email',
+                'telepon' => 'required|string|max:255',
+                'no_bpjs' => 'nullable|string|max:255',
+                'alamat' => 'nullable|string',
+                'kota' => 'nullable|string|max:255',
+                'provinsi' => 'nullable|string|max:255',
+                'kode_pos' => 'nullable|string|max:10',
+                'divisi' => 'required|string|max:255',
+                'departemen' => 'required|string|max:255',
+                'jabatan' => 'required|string|max:255',
+                'grade' => 'nullable|string|max:255',
+                'lokasi_kerja' => 'nullable|string|max:255',
+                'status_kepegawaian' => 'required|string|max:255',
+                'tanggal_masuk' => 'required|date',
+                'tanggal_kontrak_habis' => 'nullable|date',
+                'no_ktp' => 'nullable|string|max:255',
+                'no_npwp' => 'nullable|string|max:255',
+                'no_kk' => 'nullable|string|max:255',
+                'status' => 'required|in:aktif,kontrak,resign',
+            ]);
+
+            $employee = Employee::create($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Karyawan berhasil ditambahkan',
+                'data' => $employee,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
-    public function show(string $id)
+    public function show($id)
     {
-        return view('employee.show', ['id' => $id]);
+        try {
+            $employee = Employee::findOrFail($id);
+
+            return response()->json([
+                'success' => true,
+                'data' => $employee,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        return view('employee.edit', ['id' => $id]);
+        try {
+            $employee = Employee::findOrFail($id);
+
+            $validated = $request->validate([
+                'nik' => 'required|string|max:255|unique:global.pegawai,nik,' . $id,
+                'nama' => 'required|string|max:255',
+                'tempat_lahir' => 'nullable|string|max:255',
+                'tanggal_lahir' => 'nullable|date',
+                'jenis_kelamin' => 'required|in:L,P',
+                'agama' => 'nullable|string|max:255',
+                'status_nikah' => 'nullable|string|max:255',
+                'golongan_darah' => 'nullable|string|max:5',
+                'email' => 'required|email|max:255|unique:global.pegawai,email,' . $id,
+                'telepon' => 'required|string|max:255',
+                'no_bpjs' => 'nullable|string|max:255',
+                'alamat' => 'nullable|string',
+                'kota' => 'nullable|string|max:255',
+                'provinsi' => 'nullable|string|max:255',
+                'kode_pos' => 'nullable|string|max:10',
+                'divisi' => 'required|string|max:255',
+                'departemen' => 'required|string|max:255',
+                'jabatan' => 'required|string|max:255',
+                'grade' => 'nullable|string|max:255',
+                'lokasi_kerja' => 'nullable|string|max:255',
+                'status_kepegawaian' => 'required|string|max:255',
+                'tanggal_masuk' => 'required|date',
+                'tanggal_kontrak_habis' => 'nullable|date',
+                'no_ktp' => 'nullable|string|max:255',
+                'no_npwp' => 'nullable|string|max:255',
+                'no_kk' => 'nullable|string|max:255',
+                'status' => 'required|in:aktif,kontrak,resign',
+            ]);
+
+            $employee->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Karyawan berhasil diupdate',
+                'data' => $employee,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
-    public function update(Request $request, string $id)
+    public function destroy($id)
     {
-        return redirect()->route('employee.index')->with('success', 'Data karyawan berhasil diupdate');
+        try {
+            $employee = Employee::findOrFail($id);
+            $employee->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Karyawan berhasil dihapus',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
-    public function destroy(string $id)
-    {
-        return redirect()->route('employee.index')->with('success', 'Karyawan berhasil dihapus');
-    }
-
-    // Sub-menu methods
+    // Sub-menu methods (still using mock data for now)
     public function riwayatJabatan()
     {
         $riwayat = collect([
