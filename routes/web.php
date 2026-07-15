@@ -393,5 +393,13 @@ Route::prefix('users')->name('users.')->group(function () {
 // Roles & Permissions
 Route::prefix('roles')->name('roles.')->group(function () {
     Route::get('/', [UserManagementController::class, 'roles'])->name('index');
+    Route::post('/', [UserManagementController::class, 'roleStore'])->name('store');
+    Route::put('/{id}', [UserManagementController::class, 'roleUpdate'])->name('update');
+    Route::delete('/{id}', [UserManagementController::class, 'roleDestroy'])->name('destroy');
+    Route::post('/{roleId}/permissions', [UserManagementController::class, 'rolePermissions'])->name('permissions.sync');
+
     Route::get('/permissions', [UserManagementController::class, 'permissions'])->name('permissions');
+    Route::post('/permissions', [UserManagementController::class, 'permissionStore'])->name('permissions.store');
+    Route::put('/permissions/{id}', [UserManagementController::class, 'permissionUpdate'])->name('permissions.update');
+    Route::delete('/permissions/{id}', [UserManagementController::class, 'permissionDestroy'])->name('permissions.destroy');
 });

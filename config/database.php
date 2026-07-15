@@ -93,7 +93,7 @@ return [
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => 'public,global',
+            'search_path' => 'global,public',
             'sslmode' => 'prefer',
         ],
 

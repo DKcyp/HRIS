@@ -100,12 +100,9 @@
                         <div class="col-md-6">
                             <label class="form-label">Role <span class="text-danger">*</span></label>
                             <select class="form-select" name="role" required>
-                                <option value="Super Admin">Super Admin</option>
-                                <option value="HRD Manager">HRD Manager</option>
-                                <option value="Payroll Staff">Payroll Staff</option>
-                                <option value="Finance Manager">Finance Manager</option>
-                                <option value="IT Admin">IT Admin</option>
-                                <option value="Employee" selected>Employee</option>
+                                @foreach($roles as $r)
+                                <option value="{{ $r->nama }}" {{ $r->nama == 'Employee' ? 'selected' : '' }}>{{ $r->nama }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -164,12 +161,9 @@
                         <div class="col-md-6">
                             <label class="form-label">Role</label>
                             <select class="form-select" id="edit-role" required>
-                                <option value="Super Admin">Super Admin</option>
-                                <option value="HRD Manager">HRD Manager</option>
-                                <option value="Payroll Staff">Payroll Staff</option>
-                                <option value="Finance Manager">Finance Manager</option>
-                                <option value="IT Admin">IT Admin</option>
-                                <option value="Employee">Employee</option>
+                                @foreach($roles as $r)
+                                <option value="{{ $r->nama }}">{{ $r->nama }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">

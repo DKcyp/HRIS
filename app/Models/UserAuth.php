@@ -10,7 +10,7 @@ class UserAuth extends Model
     use HasFactory;
 
     protected $connection = 'pgsql';
-    protected $table = 'global.user_auth';
+    protected $table = 'user_auth';
     protected $primaryKey = 'id';
 
     protected $fillable = [
