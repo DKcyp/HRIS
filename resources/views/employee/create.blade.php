@@ -10,7 +10,7 @@
             <i class="fas fa-user-plus me-2"></i>
             Form Tambah Karyawan
         </h5>
-        <a href="{{ route('employee.index') }}" class="btn btn-outline-secondary">
+        <a href="{{ route('employee.index') }}" class="btn btn-outline-secondary" onclick="navigateTo(event, '{{ route('employee.index') }}')">
             <i class="fas fa-arrow-left me-1"></i> Kembali
         </a>
     </div>
@@ -214,7 +214,7 @@
 
             <!-- Submit -->
             <div class="d-flex justify-content-end gap-2">
-                <a href="{{ route('employee.index') }}" class="btn btn-outline-secondary px-4">
+                <a href="{{ route('employee.index') }}" class="btn btn-outline-secondary px-4" onclick="navigateTo(event, '{{ route('employee.index') }}')">
                     <i class="fas fa-times me-1"></i> Batal
                 </a>
                 <button type="reset" class="btn btn-outline-warning px-4">

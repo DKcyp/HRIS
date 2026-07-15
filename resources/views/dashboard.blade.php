@@ -206,25 +206,25 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <a href="{{ route('employee.create') }}" class="btn btn-primary w-100 py-3">
+                        <a href="{{ route('employee.create') }}" class="btn btn-primary w-100 py-3" onclick="navigateTo(event, '{{ route('employee.create') }}')">
                             <i class="fas fa-user-plus fa-2x mb-2 d-block"></i>
                             Tambah Karyawan Baru
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="{{ route('attendance.checkin') }}" class="btn btn-success w-100 py-3">
+                        <a href="{{ route('attendance.checkin') }}" class="btn btn-success w-100 py-3" onclick="navigateTo(event, '{{ route('attendance.checkin') }}')">
                             <i class="fas fa-sign-in-alt fa-2x mb-2 d-block"></i>
                             Check In/Out
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="{{ route('leave.index') }}" class="btn btn-info w-100 py-3">
+                        <a href="{{ route('leave.index') }}" class="btn btn-info w-100 py-3" onclick="navigateTo(event, '{{ route('leave.index') }}')">
                             <i class="fas fa-umbrella-beach fa-2x mb-2 d-block"></i>
                             Ajukan Cuti
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="{{ route('laporan.index') }}" class="btn btn-warning w-100 py-3">
+                        <a href="{{ route('laporan.index') }}" class="btn btn-warning w-100 py-3" onclick="navigateTo(event, '{{ route('laporan.index') }}')">
                             <i class="fas fa-file-alt fa-2x mb-2 d-block"></i>
                             Generate Laporan
                         </a>

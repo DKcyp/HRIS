@@ -5,7 +5,7 @@
 @section('content')
 <div class="row">
     <div class="col-md-4 mb-4">
-        <a href="{{ route('laporan.attendance') }}" class="text-decoration-none">
+        <a href="{{ route('laporan.attendance') }}" class="text-decoration-none" onclick="navigateTo(event, '{{ route('laporan.attendance') }}')">
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body text-center">
                     <i class="fas fa-calendar-check fa-3x text-primary mb-3"></i>
@@ -16,7 +16,7 @@
         </a>
     </div>
     <div class="col-md-4 mb-4">
-        <a href="{{ route('laporan.leave') }}" class="text-decoration-none">
+        <a href="{{ route('laporan.leave') }}" class="text-decoration-none" onclick="navigateTo(event, '{{ route('laporan.leave') }}')">
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body text-center">
                     <i class="fas fa-umbrella-beach fa-3x text-success mb-3"></i>
@@ -27,7 +27,7 @@
         </a>
     </div>
     <div class="col-md-4 mb-4">
-        <a href="{{ route('laporan.payroll') }}" class="text-decoration-none">
+        <a href="{{ route('laporan.payroll') }}" class="text-decoration-none" onclick="navigateTo(event, '{{ route('laporan.payroll') }}')">
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body text-center">
                     <i class="fas fa-money-bill-wave fa-3x text-warning mb-3"></i>
@@ -38,7 +38,7 @@
         </a>
     </div>
     <div class="col-md-4 mb-4">
-        <a href="{{ route('laporan.employee') }}" class="text-decoration-none">
+        <a href="{{ route('laporan.employee') }}" class="text-decoration-none" onclick="navigateTo(event, '{{ route('laporan.employee') }}')">
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body text-center">
                     <i class="fas fa-users fa-3x text-info mb-3"></i>
@@ -49,7 +49,7 @@
         </a>
     </div>
     <div class="col-md-4 mb-4">
-        <a href="{{ route('laporan.turnover') }}" class="text-decoration-none">
+        <a href="{{ route('laporan.turnover') }}" class="text-decoration-none" onclick="navigateTo(event, '{{ route('laporan.turnover') }}')">
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body text-center">
                     <i class="fas fa-exchange-alt fa-3x text-danger mb-3"></i>
@@ -60,7 +60,7 @@
         </a>
     </div>
     <div class="col-md-4 mb-4">
-        <a href="{{ route('laporan.lembur') }}" class="text-decoration-none">
+        <a href="{{ route('laporan.lembur') }}" class="text-decoration-none" onclick="navigateTo(event, '{{ route('laporan.lembur') }}')">
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body text-center">
                     <i class="fas fa-business-time fa-3x text-secondary mb-3"></i>

@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <a href="{{ route('users.index') }}" class="btn btn-secondary me-2"><i class="fas fa-arrow-left me-1"></i> Kembali</a>
+                <a href="{{ route('users.index') }}" class="btn btn-secondary me-2" onclick="navigateTo(event, '{{ route('users.index') }}')"><i class="fas fa-arrow-left me-1"></i> Kembali</a>
                 <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Simpan</button>
             </div>
         </form>

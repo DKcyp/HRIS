@@ -10,7 +10,7 @@
             <i class="fas fa-users me-2"></i>
             Daftar Karyawan
         </h5>
-        <button class="btn btn-primary" onclick="window.location='{{ route('employee.create') }}'">
+        <button class="btn btn-primary" onclick="navigateTo(event, '{{ route('employee.create') }}')">
             <i class="fas fa-plus me-1"></i> Tambah Karyawan
         </button>
     </div>
@@ -103,7 +103,7 @@
                         <td colspan="8" class="text-center py-5 text-muted">
                             <i class="fas fa-users fa-3x mb-3 d-block"></i>
                             <p>Belum ada data karyawan</p>
-                            <button class="btn btn-primary mt-2" onclick="window.location='{{ route('employee.create') }}'">
+                            <button class="btn btn-primary mt-2" onclick="navigateTo(event, '{{ route('employee.create') }}')">
                                 <i class="fas fa-plus me-1"></i> Tambah Karyawan Pertama
                             </button>
                         </td>
