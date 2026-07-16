@@ -72,6 +72,7 @@
         <div class="login-body">
             <div id="loginAlert" class="alert d-none" role="alert"></div>
             <form id="loginForm">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="mb-3">
                     <label class="form-label">Username</label>
                     <div class="input-group">
@@ -127,6 +128,7 @@
                     method: 'POST',
                     body: formData,
                     headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                         'X-Requested-With': 'XMLHttpRequest',
                         'Accept': 'application/json'
                     }
