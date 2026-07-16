@@ -608,9 +608,23 @@
                         </a>
                     </div>
                 </div>
-                <span class="text-muted">Admin User</span>
+                <span class="text-muted">{{ Auth::user()->nama ?? 'Guest' }}</span>
                 <div class="user-avatar">
-                    A
+                    {{ strtoupper(substr(Auth::user()->nama ?? 'G', 0, 1)) }}
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><span class="dropdown-item-text"><small class="text-muted">{{ Auth::user()->role ?? '' }}</small></span></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class UserAuth extends Model
+class UserAuth extends Authenticatable
 {
-    use HasFactory;
-
     protected $connection = 'pgsql';
     protected $table = 'user_auth';
     protected $primaryKey = 'id';
@@ -33,5 +30,35 @@ class UserAuth extends Model
             'last_login' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    public function getRememberToken()
+    {
+        return null;
+    }
+
+    public function setRememberToken($value)
+    {
+    }
+
+    public function getRememberTokenName()
+    {
+        return '';
+    }
+
+    public function getRolePermissions()
+    {
+        $role = Role::where('nama', $this->role)->first();
+        return $role ? $role->permissions : collect();
     }
 }

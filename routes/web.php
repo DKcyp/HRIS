@@ -17,6 +17,18 @@ use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\ResignController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\AuthController;
+
+// Auth Routes (guest only)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+});
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// Protected Routes
+Route::middleware('auth')->group(function () {
 
 // Dashboard
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -403,3 +415,5 @@ Route::prefix('roles')->name('roles.')->group(function () {
     Route::put('/permissions/{id}', [UserManagementController::class, 'permissionUpdate'])->name('permissions.update');
     Route::delete('/permissions/{id}', [UserManagementController::class, 'permissionDestroy'])->name('permissions.destroy');
 });
+
+}); // End auth middleware
